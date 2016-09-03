@@ -1,0 +1,56 @@
+{
+  "name": "nativeloop",
+  "version": "0.0.1-beta.1",
+  "description": "command-line interface for building {nativeloop} mobile apps",
+  "keywords": [],
+  "homepage": "git://github.com/nativeloop/nativeloop-cli",
+  "bugs": {
+    "url": "https://github.com/nativeloop/nativeloop-cli/issues",
+    "email": "support@nativeloop.com"
+  },
+  "license": "MIT",
+  "author": {
+    "name": "Brenton House",
+    "email": "brenton.house@gmail.com",
+    "url": "https://github.com/brentonhouse"
+  },
+  "main": "./cli.js",
+  "scripts": {
+    "add": "git add -A",
+    "preadd-version": "npm run add",
+    "add-version": "node npm-scripts/version",
+    "push": "npm run commit --",
+    "commit": "npm run add-version --",
+    "postpush": "git push && git push --tags"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/nativeloop/nativeloop-cli.git"
+  },
+  "devDependencies": {
+    "semver": "^5.1.0"
+  },
+  "engines": {
+    "node": ">=0.10"
+  },
+  "dependencies": {
+    "@geek/npm": "0.0.1-beta.3",
+    "@geek/spinner": "^0.3.1-revision.1",
+    "bluebird": "^3.4.1",
+    "chalk": "^1.1.3",
+    "conf": "^0.11.2",
+    "debug": "^2.2.0",
+    "env-paths": "^0.3.0",
+    "figures": "^1.7.0",
+    "findit": "^2.0.0",
+    "fs-extra": "^0.30.0",
+    "lodash": "^4.15.0",
+    "path-exists": "^3.0.0",
+    "temp": "^0.8.3",
+    "yargs": "^5.0.0"
+  },
+  "bin": {
+    "native": "cli.js",
+    "nativeloop": "cli.js"
+  }
+}

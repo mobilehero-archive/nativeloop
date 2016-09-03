@@ -1,0 +1,51 @@
+// Place your settings in this file to overwrite default and user settings.
+{
+	//-------- Editor configuration --------
+
+	// Configure file associations to languages (e.g. "*.extension": "html"). These have precedence over the default associations of the languages installed.
+	"files.associations": { 
+		"*.tss": "javascript"
+	},
+
+	//-------- Files configuration --------
+
+	// Configure glob patterns for excluding files and folders.
+	"files.exclude": {
+		"**/.git": true,
+		"**/.svn": true,
+		"**/.DS_Store": true,
+		"**/Resources": false,
+		"**/obj": true
+	},
+
+	//-------- Search configuration --------
+
+	// Configure glob patterns for excluding files and folders in searches. Inherits all glob patterns from the file.exclude setting.
+	"search.exclude": {
+		"**/node_modules": true,
+		"**/bower_components": true,
+		"**/build": true,
+		"alloy.d.ts": true,
+		"titanium.d.ts": true,
+		"global.d.ts": true,
+		"**/plugin.py": true,
+		"**/Resources": true
+	},
+
+	// File extensions that can be beautified as HTML.
+	"beautify.HTMLfiles": [
+		"htm",
+		"html",
+		"xml"
+	],
+
+	// File extensions that can be beautified as javascript or JSON.
+	"beautify.JSfiles": [
+		"js",
+		"json",
+		"jsbeautifyrc",
+		"jshintrc",
+		"tss"
+	]
+	
+}
