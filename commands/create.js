@@ -13,6 +13,7 @@ const module_name = path.parse(module.id).name;
 // const debug = require('debug')('nativeloop');
 const Spinner = require('@geek/spinner');
 const figures = require('figures');
+const findit = require('findit');
 
 // debug logger
 var logger = (func_name) => {
@@ -145,9 +146,7 @@ var execute = function(argv) {
 		return new Promise((resolve, reject) => {
 			spinner.start("Looking for Appcelerator project folder");
 			debug("looking for tiapp.xml in: " + root);
-			var finder = require('findit')(root);
-			var path = require('path');
-
+			var finder = findit(root);
 			finder.on('file', function(file, stat) {
 				var filepath = path.parse(file);
 				if (filepath.base === "tiapp.xml") {
@@ -188,7 +187,7 @@ var execute = function(argv) {
 		let debug = logger('cleanup');
 		spinner.start("Cleaning up temporary files");
 		return fs.removeAsync(temp_directory)
-			//.then(() => spinner.succeed())
+			.then(() => spinner.succeed())
 			.catch(err => {
 				spinner.fail();
 				debug("Error cleaning up: " + err.message || err);
@@ -224,23 +223,41 @@ var execute = function(argv) {
 		spinner.start("Checking for local template");
 		return pathExists(source)
 			.then(exists => {
-				spinner.succeed();
 				debug("pathExists.sync(source): " + exists);
 				if (exists) {
+					spinner.succeed();
 					return source;
 				} else {
-					debug("installing template to: " + project_directory);
-					spinner.start("Installing template to temp directory");
+					spinner.text += chalk.gray(" [skipped]");
+					spinner.stopAndPersist(chalk.gray(figures.cross));
+					spinner.column += 4;
+					spinner.stopAndPersist(figures.pointerSmall, chalk.gray("Local template not found."));
+					spinner.column -= 4;
+					debug("installing remote template to: " + project_directory);
+					spinner.start("Installing remote template to temp directory");
 					return npm.install([argv.template, "--ignore-scripts", "--global-style"], {
 							cwd: temp_directory,
 							silent: true,
 						})
 						.then(() => {
-							spinner.succeed();
-							spinner.start("Examining template");
-							var first = _.first(fs.readdirSync(nodeModulesDir));
-							spinner.succeed();
-							return path.join(nodeModulesDir, first);
+							return new Promise((resolve, reject) => {
+								spinner.succeed();
+								spinner.start("Examining template");
+
+								var finder = findit(nodeModulesDir);
+								finder.on('file', function(file, stat) {
+									var filepath = path.parse(file);
+									if (_.includes(["package.json", "template.json"]), filepath.base) {
+										spinner.succeed();
+										resolve(filepath.dir);
+										finder.stop();
+									}
+								});
+							});
+
+							// var first = _.first(fs.readdirSync(nodeModulesDir));
+							// spinner.succeed();
+							// return path.join(nodeModulesDir, first);
 						});
 				}
 			})
@@ -269,6 +286,7 @@ var execute = function(argv) {
 							return fs.copyAsync(path.join(project_directory, "template.json"), path.join(project_directory, "package.json"), {
 									clobber: true
 								})
+								.then(() => fs.removeAsync(path.join(project_directory, "template.json")))
 								.then(() => spinner.succeed());
 						}
 					})
@@ -290,6 +308,7 @@ var execute = function(argv) {
 							return fs.copyAsync(path.join(project_directory, "template.md"), path.join(project_directory, "readme.md"), {
 									clobber: true
 								})
+								.then(() => fs.removeAsync(path.join(project_directory, "template.md")))
 								.then(() => spinner.succeed())
 						}
 					})
@@ -328,7 +347,7 @@ var execute = function(argv) {
 		.then(() => configure_package_json())
 		.then(() => {
 			spinner.start("Installing npm dependencies");
-			npm.install({
+			return npm.install({
 					cwd: project_directory,
 					silent: true,
 				})
