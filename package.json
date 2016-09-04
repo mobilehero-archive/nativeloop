@@ -1,6 +1,6 @@
 {
   "name": "nativeloop",
-  "version": "0.0.1-beta.1",
+  "version": "0.0.1-beta.2",
   "description": "command-line interface for building {nativeloop} mobile apps",
   "keywords": [],
   "homepage": "git://github.com/nativeloop/nativeloop-cli",
@@ -34,7 +34,7 @@
     "node": ">=0.10"
   },
   "dependencies": {
-    "@geek/npm": "0.0.1-beta.3",
+    "@geek/npm": "0.0.1-beta.4",
     "@geek/spinner": "^0.3.1-revision.1",
     "bluebird": "^3.4.1",
     "chalk": "^1.1.3",
