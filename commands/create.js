@@ -11,7 +11,7 @@ const npm = require('@geek/npm');
 const temp = require("temp");
 const module_name = path.parse(module.id).name;
 // const debug = require('debug')('nativeloop');
-const Spinner = require('@geek/spinner');
+const spinner = new(require('@geek/spinner'))();
 const figures = require('figures');
 const findit = require('findit');
 
@@ -108,6 +108,12 @@ var execute = function(argv) {
 	debug("project_directory: " + project_directory);
 	debug("project_directory.exists: " + pathExists.sync(project_directory));
 
+	var configure_project_directory = function() {
+		spinner.start("Configuring project directory: " + project_directory);
+		return fs.ensureDirAsync(project_directory)
+			.then(() => spinner.succeed());
+	}
+
 	var template_appc = function(filename) {
 		let debug = logger('template_appc');
 		var filename = path.join(appc_directory, filename);
@@ -144,18 +150,29 @@ var execute = function(argv) {
 	var findTiappXml = function(root) {
 		let debug = logger('findTiappXml');
 		return new Promise((resolve, reject) => {
-			spinner.start("Looking for Appcelerator project folder");
-			debug("looking for tiapp.xml in: " + root);
-			var finder = findit(root);
-			finder.on('file', function(file, stat) {
-				var filepath = path.parse(file);
-				if (filepath.base === "tiapp.xml") {
-					spinner.succeed();
-					resolve(filepath.dir);
-					finder.stop();
+				spinner.start("Looking for Appcelerator project folder");
+				debug("looking for tiapp.xml in: " + root);
+				var finder = findit(root);
+				finder.on('file', function(file, stat) {
+					var filepath = path.parse(file);
+					if (filepath.base === "tiapp.xml") {
+						spinner.succeed();
+						resolve(filepath.dir);
+						finder.stop();
+					}
+				});
+			})
+			.then(result => {
+				appc_directory = result;
+				if (!appc_directory) {
+					spinner.fail(chalk.red("Appcelerator directory not found"));
+					return false;
 				}
+				spinner.column += 4;
+				spinner.stopAndPersist(figures.pointerSmall, chalk.gray(appc_directory));
+				spinner.column -= 4;
+				// debug("appc_directory: " + appc_directory);;
 			});
-		});
 	}
 
 	var install_nativeloop_mobile = function() {
@@ -212,8 +229,6 @@ var execute = function(argv) {
 			.then(() => spinner.succeed());
 	}
 
-	const spinner = new Spinner().start();
-
 	var copy_template = function(name) {
 		// let debug = logger('copy_template');
 		spinner.stopAndPersist(figures.arrowRight, "Installing template");
@@ -254,10 +269,6 @@ var execute = function(argv) {
 									}
 								});
 							});
-
-							// var first = _.first(fs.readdirSync(nodeModulesDir));
-							// spinner.succeed();
-							// return path.join(nodeModulesDir, first);
 						});
 				}
 			})
@@ -328,22 +339,10 @@ var execute = function(argv) {
 	debug('temp_directory: ' + JSON.stringify(temp_directory, null, 2));
 
 
-	Promise.resolve(fs.ensureDirAsync(project_directory))
+	// Promise.resolve(fs.ensureDirAsync(project_directory))
+		configure_project_directory()
 		.then(() => copy_template(argv.template))
 		.then(() => findTiappXml(project_directory))
-		.then(result => {
-			appc_directory = result;
-			if (!appc_directory) {
-				spinner.text = chalk.red("Appcelerator directory not found");
-				spinner.fail();
-				return false;
-			}
-
-			spinner.column += 4;
-			spinner.stopAndPersist(figures.pointerSmall, chalk.gray(appc_directory));
-			spinner.column -= 4;
-			// debug("appc_directory: " + appc_directory);
-		})
 		.then(() => configure_package_json())
 		.then(() => {
 			spinner.start("Installing npm dependencies");
@@ -372,7 +371,7 @@ var execute = function(argv) {
 
 var handler = function(argv) {
 
-	argv.name = argv.name || argv._[2] || "My App";
+	argv.name = argv.name || argv._[1] || "my-nativeloop-app";
 	argv.id = argv.id || _.kebabCase(argv.publisher.trim()).toLowerCase() + "." + _.kebabCase(argv.name.trim()).toLowerCase();
 	argv.path = argv.path || path.join(process.cwd(), argv.name);
 

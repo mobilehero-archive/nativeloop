@@ -1,6 +1,6 @@
 {
   "name": "nativeloop",
-  "version": "0.0.1-beta.3",
+  "version": "0.0.1-beta.4",
   "description": "command-line interface for building {nativeloop} mobile apps",
   "keywords": [],
   "homepage": "git://github.com/nativeloop/nativeloop-cli",

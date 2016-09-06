@@ -25,7 +25,7 @@ Create from custom template | `native create <App Name> [--path <Directory>] [--
 
 - `--path` - Specifies the directory where you want to create the project, if different from the current directory. The directory must be empty.
 - `--id` - [optional] Sets the application identifier for your project.  If `--id` is not set, the App ID is created based on the name of the app.
-- `--template` - [optional] Specifies a local directory or valid npm package which you want to use to create your project. If `--template` are not set, the {nativeloop} CLI creates the project from the default template `@nativeloop/template-default`
+- `--template` - [optional] Specifies a local directory or valid npm package which you want to use to create your project. If `--template` is not set, the {nativeloop} CLI creates the project from the default template `@nativeloop/template-default`
 - `--name` - Specifies the name of your project.  This is alternative to passing the app name as the first parameter.
 - `--url` - [optional] Specifies the url for your organization.
 - `--publisher` - [optional] Specifies the publisher for this app.
