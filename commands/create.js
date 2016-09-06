@@ -14,6 +14,7 @@ const module_name = path.parse(module.id).name;
 const spinner = new(require('@geek/spinner'))();
 const figures = require('figures');
 const findit = require('findit');
+const using = Promise.using;
 
 // debug logger
 var logger = (func_name) => {
@@ -108,17 +109,36 @@ var execute = function(argv) {
 	debug("project_directory: " + project_directory);
 	debug("project_directory.exists: " + pathExists.sync(project_directory));
 
+	var getTempDirectory = function() {
+		const temp_directory = temp.path({
+			prefix: "nativeloop"
+		});
+		fs.emptyDirSync(temp_directory);
+
+		// const nodeModulesDir = path.join(temp_directory, "node_modules");
+		debug('temp_directory: ' + JSON.stringify(temp_directory, null, 2));
+		return Promise.resolve(temp_directory)
+			.disposer((directory, promise) => {
+				fs.removeSync(directory);
+			});
+	}
+
 	var configure_project_directory = function() {
-		spinner.start("Configuring project directory: " + project_directory);
+		spinner.start("Configuring project directory");
 		return fs.ensureDirAsync(project_directory)
-			.then(() => spinner.succeed());
+			.then(() => {
+				spinner.succeed();
+				spinner.column += 4;
+				spinner.stopAndPersist(figures.pointerSmall, chalk.gray(project_directory));
+				spinner.column -= 4;
+			});
 	}
 
 	var template_appc = function(filename) {
 		let debug = logger('template_appc');
 		var filename = path.join(appc_directory, filename);
 		// debug("templating file: " + filename);
-		spinner.start("Templating file: " + filename);
+		spinner.start(filename);
 		return fs.readFileAsync(filename)
 			.then((source) => fs.writeFileAsync(filename, _.template(source)(argv)))
 			.then(() => spinner.succeed());
@@ -128,7 +148,7 @@ var execute = function(argv) {
 		// let debug = logger('template_nativeloop');
 		var filename = path.join(project_directory, filename);
 		// debug("templating file: " + filename);
-		spinner.start("Templating file: " + filename);
+		spinner.start(filename);
 		return fs.readFileAsync(filename)
 			.then((source) => fs.writeFileAsync(filename, _.template(source)(argv)))
 			.then(() => spinner.succeed());
@@ -165,7 +185,10 @@ var execute = function(argv) {
 			.then(result => {
 				appc_directory = result;
 				if (!appc_directory) {
+					spinner.fail();
+					spinner.column += 4;
 					spinner.fail(chalk.red("Appcelerator directory not found"));
+					spinner.column -= 4;
 					return false;
 				}
 				spinner.column += 4;
@@ -200,109 +223,46 @@ var execute = function(argv) {
 			});
 	}
 
-	var cleanup = function() {
-		let debug = logger('cleanup');
-		spinner.start("Cleaning up temporary files");
-		return fs.removeAsync(temp_directory)
-			.then(() => spinner.succeed())
-			.catch(err => {
-				spinner.fail();
-				debug("Error cleaning up: " + err.message || err);
-				console.error("Error cleaning up: " + err.message || err);
-			});
-	}
+	// var cleanup = function() {
+	// 	let debug = logger('cleanup');
+	// 	spinner.start("Cleaning up temporary files");
+	// 	return fs.removeAsync(temp_directory)
+	// 		.then(() => spinner.succeed())
+	// 		.catch(err => {
+	// 			spinner.fail();
+	// 			debug("Error cleaning up: " + err.message || err);
+	// 			spinner.column += 4;
+	// 			spinner.fail(err);
+	// 			spinner.column -= 4;
+	// 		});
+	// }
 
-	var configure_package_json = function() {
-		spinner.start("Configuring package.json");
-		var pkg = _.defaults({
-			name: argv.name,
-			description: argv.description,
-			author: {
-				name: argv.publisher
-			},
-			version: "1.0.0-revision.0"
-		}, _.omitBy(require(path.join(project_directory, "package.json")), (value, key) => {
-			return _.startsWith(key, "_") || (_.includes(["gitHead", "readme"], key));
-		}));
-
-		return fs.writeJsonAsync(path.join(project_directory, "package.json"), pkg)
-			.then(() => spinner.succeed());
-	}
-
-	var copy_template = function(name) {
-		// let debug = logger('copy_template');
-		spinner.stopAndPersist(figures.arrowRight, "Installing template");
-		var source = path.resolve(argv.template);
-		debug("source: " + source);
+	var configure_project_files = function() {
+		spinner.stopAndPersist(figures.arrowRight, "Configuring project files");
 		spinner.column += 4;
-		spinner.start("Checking for local template");
-		return pathExists(source)
-			.then(exists => {
-				debug("pathExists.sync(source): " + exists);
-				if (exists) {
-					spinner.succeed();
-					return source;
-				} else {
+
+		debug("renaming template.json file: " + project_directory);
+		spinner.start("Renaming template.json");
+		return pathExists(path.join(project_directory, "template.json"))
+			.then((exists) => {
+				if (!exists) {
+					debug("skipping rename of template.json:  file does not exist");
 					spinner.text += chalk.gray(" [skipped]");
 					spinner.stopAndPersist(chalk.gray(figures.cross));
 					spinner.column += 4;
-					spinner.stopAndPersist(figures.pointerSmall, chalk.gray("Local template not found."));
+					spinner.stopAndPersist(figures.pointerSmall, chalk.gray("File does not exist"));
 					spinner.column -= 4;
-					debug("installing remote template to: " + project_directory);
-					spinner.start("Installing remote template to temp directory");
-					return npm.install([argv.template, "--ignore-scripts", "--global-style"], {
-							cwd: temp_directory,
-							silent: true,
+					return true;
+				} else {
+					return fs.copyAsync(path.join(project_directory, "template.json"), path.join(project_directory, "package.json"), {
+							clobber: true
 						})
-						.then(() => {
-							return new Promise((resolve, reject) => {
-								spinner.succeed();
-								spinner.start("Examining template");
-
-								var finder = findit(nodeModulesDir);
-								finder.on('file', function(file, stat) {
-									var filepath = path.parse(file);
-									if (_.includes(["package.json", "template.json"]), filepath.base) {
-										spinner.succeed();
-										resolve(filepath.dir);
-										finder.stop();
-									}
-								});
-							});
-						});
+						.then(() => fs.removeAsync(path.join(project_directory, "template.json")))
+						.then(() => spinner.succeed());
 				}
 			})
-			.then((template_source) => {
-				debug("copying files to project directory: " + project_directory);
-				spinner.start("Copying template to project folder");
-				return fs.copyAsync(template_source, project_directory, {
-						clobber: true
-					})
-					.then(() => spinner.succeed());
-			})
-			.then(() => {
-				debug("renaming template.json file: " + project_directory);
-				spinner.start("Renaming template.json");
-				return pathExists(path.join(project_directory, "template.json"))
-					.then((exists) => {
-						if (!exists) {
-							debug("skipping rename of template.json:  file does not exist");
-							spinner.text += chalk.gray(" [skipped]");
-							spinner.stopAndPersist(chalk.gray(figures.cross));
-							spinner.column += 4;
-							spinner.stopAndPersist(figures.pointerSmall, chalk.gray("File does not exist"));
-							spinner.column -= 4;
-							return true;
-						} else {
-							return fs.copyAsync(path.join(project_directory, "template.json"), path.join(project_directory, "package.json"), {
-									clobber: true
-								})
-								.then(() => fs.removeAsync(path.join(project_directory, "template.json")))
-								.then(() => spinner.succeed());
-						}
-					})
-			})
-			.then(() => {
+
+		.then(() => {
 				debug("renaming template.md file: " + project_directory);
 				spinner.start("Renaming template.md");
 				return pathExists(path.join(project_directory, "template.md"))
@@ -325,25 +285,96 @@ var execute = function(argv) {
 					})
 			})
 			.then(() => {
+				spinner.start("Configuring package.json");
+				var pkg = _.defaults({
+					name: argv.name,
+					description: argv.description,
+					author: {
+						name: argv.publisher
+					},
+					version: "1.0.0-revision.0"
+				}, _.omitBy(require(path.join(project_directory, "package.json")), (value, key) => {
+					return _.startsWith(key, "_") || (_.includes(["gitHead", "readme"], key));
+				}));
+
+				return fs.writeJsonAsync(path.join(project_directory, "package.json"), pkg)
+					.then(() => spinner.succeed())
+			})
+			.then(() => {
 				spinner.column -= 4;
+				return true;
 			});
 
 	}
-	const temp_directory = temp.path({
-		prefix: "nativeloop"
-	});
-	fs.emptyDirSync(temp_directory);
 
-	const nodeModulesDir = path.join(temp_directory, "node_modules");
+	var copy_template = function(name) {
+		// let debug = logger('copy_template');
+		spinner.stopAndPersist(figures.arrowRight, "Installing template");
+		var source = path.resolve(name);
+		debug("source: " + source);
+		spinner.column += 4;
+		spinner.start("Checking for local template");
+		return pathExists(source)
+			.then(exists => {
+				debug("pathExists.sync(source): " + exists);
+				if (exists) {
+					spinner.succeed();
+					return source;
+				} else {
+					spinner.text += chalk.gray(" [skipped]");
+					spinner.stopAndPersist(chalk.gray(figures.cross));
+					spinner.column += 4;
+					spinner.stopAndPersist(figures.pointerSmall, chalk.gray("Local template not found."));
+					spinner.column -= 4;
 
-	debug('temp_directory: ' + JSON.stringify(temp_directory, null, 2));
+					return using(getTempDirectory(), (temp_directory) => {
+						const nodeModulesDir = path.join(temp_directory, "node_modules");
+						debug("installing remote template to: " + project_directory);
+						spinner.start("Installing remote template: " + chalk.gray(name));
+						return npm.install([name, "--ignore-scripts", "--global-style"], {
+								cwd: temp_directory,
+								silent: true,
+							})
+							.then(() => {
+								return new Promise((resolve, reject) => {
+									spinner.succeed();
+									spinner.start("Examining template");
+
+									var finder = findit(nodeModulesDir);
+									finder.on('file', function(file, stat) {
+										var filepath = path.parse(file);
+										if (_.includes(["package.json", "template.json"]), filepath.base) {
+											spinner.succeed();
+											resolve(filepath.dir);
+											finder.stop();
+										}
+									});
+								});
+							})
+							.then((template_source) => {
+								debug("copying files to project directory: " + project_directory);
+								spinner.start("Copying template to project folder");
+								return fs.copyAsync(template_source, project_directory, {
+										clobber: true
+									})
+									.then(() => {
+										spinner.succeed();
+										spinner.column -= 4;
+										return true;
+									});
+							});
+					})
 
 
-	// Promise.resolve(fs.ensureDirAsync(project_directory))
-		configure_project_directory()
+				}
+			});
+
+	}
+
+	configure_project_directory()
 		.then(() => copy_template(argv.template))
 		.then(() => findTiappXml(project_directory))
-		.then(() => configure_package_json())
+		.then(() => configure_project_files())
 		.then(() => {
 			spinner.start("Installing npm dependencies");
 			return npm.install({
@@ -361,12 +392,26 @@ var execute = function(argv) {
 				.then(() => spinner.succeed());
 		})
 		.then(() => template_files())
-		.finally(() => {
-			//TODO: Figure out why the last spinner entry is output twice
-			cleanup();
-			// spinner.stop();
-		})
-		.catch(err => console.error("Error occurred: " + err));
+		// .finally(() => {
+		// 	//TODO: Figure out why the last spinner entry is output twice
+		// 	cleanup();
+		// 	// spinner.stop();
+		// })
+		.catch(err => {
+			console.error("Error occurred: " + err);
+			spinner.fail();
+			spinner.column += 4;
+			spinner.fail(err);
+			spinner.column -= 4;
+		});
+
+	process.on("unhandledRejection", function(reason, promise) {
+		// console.error("Error occurred: " + reason);
+		spinner.fail();
+		spinner.column += 4;
+		spinner.fail(reason);
+		spinner.column -= 4;
+	});
 }
 
 var handler = function(argv) {
