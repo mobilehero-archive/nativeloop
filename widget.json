@@ -1,0 +1,13 @@
+{
+	"id": "nativeloop",
+	"name": "nativeloop",
+	"description": "nativeloop",
+	"author": "Brenton House, @brentonhouse",
+	"version": "1.0.0",
+	"copyright": "Copyright (c) 2016, Superhero Studios Incorporated",
+	"license": "MIT",
+	"min-alloy-version": "1.9.0",
+	"min-titanium-version": "5.0",
+	"tags": "",
+	"platforms": "android,ios"
+}

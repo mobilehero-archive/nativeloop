@@ -1,11 +1,18 @@
 {
   "name": "nativeloop",
-  "version": "0.0.1-beta.5",
-  "description": "command-line interface for building {nativeloop} mobile apps",
-  "keywords": [],
-  "homepage": "git://github.com/nativeloop/nativeloop-cli",
+  "version": "0.0.1-beta.6",
+  "description": "Tool for building {nativeloop} mobile apps",
+  "keywords": [
+    "nativeloop",
+    "appcelerator",
+    "titanium",
+    "alloy",
+    "widget",
+    "mobilehero"
+  ],
+  "homepage": "git://github.com/nativeloop/nativeloop",
   "bugs": {
-    "url": "https://github.com/nativeloop/nativeloop-cli/issues",
+    "url": "https://github.com/nativeloop/nativeloop/issues",
     "email": "support@nativeloop.com"
   },
   "license": "MIT",
@@ -14,7 +21,7 @@
     "email": "brenton.house@gmail.com",
     "url": "https://github.com/brentonhouse"
   },
-  "main": "./cli.js",
+  "main": "./core.js",
   "scripts": {
     "add": "git add -A",
     "preadd-version": "npm run add",
@@ -35,7 +42,10 @@
   },
   "dependencies": {
     "@geek/npm": "0.0.1-beta.4",
+    "@geek/spawn": "0.0.1-beta.6",
     "@geek/spinner": "^0.3.1-revision.1",
+    "babel-core": "^6.18.2",
+    "babel-preset-es2015": "^6.18.0",
     "bluebird": "^3.4.1",
     "chalk": "^1.1.3",
     "conf": "^0.11.2",
@@ -43,10 +53,14 @@
     "env-paths": "^0.3.0",
     "figures": "^1.7.0",
     "findit": "^2.0.0",
-    "fs-extra": "^0.30.0",
-    "lodash": "^4.15.0",
+    "fs-extra": "^1.0.0",
+    "global-paths": "^0.1.2",
+    "hjson": "^2.3.1",
+    "lodash": "^4.17.2",
     "path-exists": "^3.0.0",
+    "resolve": "^1.1.7",
     "temp": "^0.8.3",
+    "wrench": "^1.5.9",
     "yargs": "^5.0.0"
   },
   "bin": {
