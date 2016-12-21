@@ -17,7 +17,7 @@
  */
 
 var _ = require( 'lodash' );
-var wrench = require( 'wrench' );
+// var wrench = require( 'wrench' );
 var path = require( 'path' );
 var fs = require( 'fs-extra' );
 var minimatch = require( 'minimatch' );
@@ -166,7 +166,7 @@ module.exports = function ( rootpath, registry, includes, logger ) {
 		if ( _.isString( patterns ) ) {
 			patterns = [ patterns ];
 		}
-		var files = _.map( wrench.readdirSyncRecursive( rootpath ), function ( filename ) {
+		var files = _.map( fs.readdirSyncRecursive( rootpath ), function ( filename ) {
 			return path.posix.sep + replaceBackSlashes( filename );
 		} );
 		var matchedFiles = match( files, patterns, {
@@ -278,7 +278,8 @@ module.exports = function ( rootpath, registry, includes, logger ) {
 
 	loadFiles();
 
-	var r = require( '../../lib/node_modules/resolver' );
+	// var r = require( '../../lib/node_modules/resolver' );
+	var r = require( '../../lib/resolver' );
 	var resolver = new r( registry, logger, true );
 	var registry = resolver.registry;
 
@@ -289,7 +290,8 @@ module.exports = function ( rootpath, registry, includes, logger ) {
 
 	
 	writeRegistry();
-	fixFile('/node_modules/nativeloop/resolver.js');
+	// fixFile('/node_modules/nativeloop/resolver.js');
+	fixFile('/nativeloop/resolver.js');
 
 	console.error( 'registry: ' + JSON.stringify( registry, null, 2 ) );
 

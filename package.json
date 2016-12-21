@@ -1,6 +1,6 @@
 {
   "name": "nativeloop",
-  "version": "0.0.2",
+  "version": "0.0.3-beta.0",
   "description": "Tool for building {nativeloop} mobile apps",
   "keywords": [
     "nativeloop",
@@ -60,7 +60,6 @@
     "path-exists": "^3.0.0",
     "resolve": "^1.1.7",
     "temp": "^0.8.3",
-    "wrench": "^1.5.9",
     "yargs": "^5.0.0"
   },
   "bin": {

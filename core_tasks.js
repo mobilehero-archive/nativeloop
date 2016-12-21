@@ -29,11 +29,12 @@ module.exports = [
 	// 	"weight": 120,
 	// 	"platforms": ["mobileweb"],
 	// },
+	{
+		"module": "nativeloop/plugins/widgets-add",
+		"events": "preload",
+		"weight": 110,
+	},
 	// {
-	// 	"module": "nativeloop/plugins/widgets-add",
-	// 	"events": "preload",
-	// 	"weight": 110,
-	// }, {
 	// 	"module": "nativeloop/plugins/widgets-remove",
 	// 	"events": "postcompile",
 	// 	"weight": 500,

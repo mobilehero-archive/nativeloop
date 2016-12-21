@@ -53,7 +53,7 @@ function plugin( params ) {
 	} );
 
 
-	_.defaults( config.dependencies, config.widgets );
+	// _.defaults( config.dependencies, config.widgets );
 
 	fs.writeFileSync( config_location, JSON.stringify( config, null, 2 ) );
 
