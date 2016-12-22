@@ -22,82 +22,86 @@
 
 
 // var apm = Alloy.Globals.apm;
-var apm = require('nativeloop/apm');
+var apm = require( 'nativeloop/apm' );
 
 $.getViewAlloy = $.getView;
-$.getView = function(id) {
+$.getView = function( id ) {
 	init();
-	return $.getViewAlloy(id);
+	return $.getViewAlloy( id );
 }
 
-var createWindow = function(payload) {
-	return payload && payload.moduleName ? Alloy.createController(payload.moduleName, payload).getViewEx({ recurse: true }) : null;
+var createWindow = function( payload ) {
+	return payload && payload.moduleName ? Alloy.createController( payload.moduleName, payload ).getViewEx( { recurse: true } ) : null;
 }
 
-var init = _.once(function() {
+var init = _.once( function() {
 	var __prefix = $.__controllerPath + ".init: ";
-	apm.leaveBreadcrumb(__prefix + "entering");
+	apm.leaveBreadcrumb( __prefix + "entering" );
 	var window_stack = [];
 	var __local_prefix
-	if(OS_IOS) {
-		$.root = $.args.root ? Alloy.createController($.args.root.moduleName, $.args.root).getViewEx({ recurse: true }) : Ti.UI.createWindow({ id: "window" });
-		$.nav = Ti.UI.iOS.createNavigationWindow({
+	if( OS_IOS ) {
+		$.root = $.args.root ? Alloy.createController( $.args.root.moduleName, $.args.root ).getViewEx( { recurse: true } ) : Ti.UI.createWindow( { id: "window" } );
+		$.nav = Ti.UI.iOS.createNavigationWindow( {
 			window: $.root,
 			id: "nav"
-		});
-		$.nav && $.addTopLevelView($.nav);
-		$.navigate = function(payload) {
-			__local_prefix = $.__controllerPath + ".navigate: ";
-			apm.leaveBreadcrumb(__local_prefix + "entering");
+		} );
+
+		$.addClass( $.root, 'navbar' );
+
+		// console.error('$.nav.barColor: ' + JSON.stringify($.nav.barColor, null, 2));
+		$.nav && $.addTopLevelView( $.nav );
+		$.go = function( payload ) {
+			__local_prefix = $.__controllerPath + ".go: ";
+			apm.leaveBreadcrumb( __local_prefix + "entering" );
 			var window;
 			try {
-				window = createWindow(payload);
-			} catch(err) {
-				console.error(err);
+				window = createWindow( payload );
+			} catch( err ) {
+				console.error( err );
 			}
-			window && $.nav.openWindow(window,{ animated: payload.animated });
-			window_stack.push(window);
-			apm.leaveBreadcrumb(__local_prefix + "exiting");
+			window && $.nav.openWindow( window, { animated: payload.animated } );
+			window_stack.push( window );
+			apm.leaveBreadcrumb( __local_prefix + "exiting" );
 		};
-		$.goBack = function(payload) {
+		$.goBack = function( payload ) {
 			__local_prefix = $.__controllerPath + ".goBack: ";
-			apm.leaveBreadcrumb(__local_prefix + "entering");
-			if(!payload) {
+			apm.leaveBreadcrumb( __local_prefix + "entering" );
+			if( !payload ) {
 				return;
 			}
 			var window = window_stack.pop();
-			window && $.nav.closeWindow(window, payload.options);
-			apm.leaveBreadcrumb(__local_prefix + "exiting");
+			window && $.nav.closeWindow( window, payload.options );
+			apm.leaveBreadcrumb( __local_prefix + "exiting" );
 		};
 		//TODO:  This should probably be handled by a close function which is called by the navigator...
-		$.goHome = function(payload) {
+		$.goHome = function( payload ) {
 			__local_prefix = $.__controllerPath + ".goHome: ";
-			apm.leaveBreadcrumb(__local_prefix + "entering");
-			for(var i = 0; i < window_stack.length; i++) {
-				window_stack[i].close(Ti.UI.iPhone.AnimationStyle.NONE);
+			apm.leaveBreadcrumb( __local_prefix + "entering" );
+			for( var i = 0; i < window_stack.length; i++ ) {
+				window_stack[ i ].close( Ti.UI.iPhone.AnimationStyle.NONE );
 			}
-			apm.leaveBreadcrumb(__local_prefix + "exiting");
+			apm.leaveBreadcrumb( __local_prefix + "exiting" );
 		};
 
 	}
 
 
-	if(OS_ANDROID) {
-		$.root = $.args.root ? Alloy.createController($.args.root.moduleName, $.args.root).getViewEx({ recurse: true }) : Ti.UI.createWindow();
-		$.root && $.addTopLevelView($.root);
-		$.navigate = function(payload) {
-			__local_prefix = $.__controllerPath + ".navigate: ";
-			apm.leaveBreadcrumb(__local_prefix + "entering");
+	if( OS_ANDROID ) {
+		$.root = $.args.root ? Alloy.createController( $.args.root.moduleName, $.args.root ).getViewEx( { recurse: true } ) : Ti.UI.createWindow();
+		$.root && $.addTopLevelView( $.root );
+		$.go = function( payload ) {
+			__local_prefix = $.__controllerPath + ".go: ";
+			apm.leaveBreadcrumb( __local_prefix + "entering" );
 			var window;
 			try {
-				window = createWindow(payload);
-			} catch(err) {
-				console.error(err);
+				window = createWindow( payload );
+			} catch( err ) {
+				console.error( err );
 			}
-			if(window) {
-				window.addEventListener("open", function(evt) {
+			if( window ) {
+				window.addEventListener( "open", function( evt ) {
 					var actionBar = window.activity.actionBar;
-					if(actionBar) {
+					if( actionBar ) {
 						actionBar.homeButtonEnabled = true;
 						actionBar.displayHomeAsUp = true;
 						actionBar.onHomeIconItemSelected = function() {
@@ -105,73 +109,73 @@ var init = _.once(function() {
 							window_stack.pop();
 						};
 					} else {
-						console.warn("No ActionBar found.");
+						console.warn( "No ActionBar found." );
 					}
-				});
+				} );
 
 				window.open();
-				window_stack.push(window);
+				window_stack.push( window );
 			}
-			apm.leaveBreadcrumb(__local_prefix + "exiting");
+			apm.leaveBreadcrumb( __local_prefix + "exiting" );
 		};
-		$.goHome = function(payload) {
+		$.goHome = function( payload ) {
 			__local_prefix = $.__controllerPath + ".goHome: ";
-			apm.leaveBreadcrumb(__local_prefix + "entering");
-			for(var i = 0; i < window_stack.length; i++) {
-				console.error("closing window: " + window_stack[i].id);
-				window_stack[i].close();
+			apm.leaveBreadcrumb( __local_prefix + "entering" );
+			for( var i = 0; i < window_stack.length; i++ ) {
+				console.error( "closing window: " + window_stack[ i ].id );
+				window_stack[ i ].close();
 			}
 		};
 	}
 
 
-	if(OS_MOBILEWEB) {
-		$.window = Ti.UI.createWindow({ id: "window" });
-		$.addTopLevelView($.window);
-		$.root = $.args.root ? Alloy.createController($.args.root.moduleName, $.args.root).getViewEx({ recurse: true }) : Ti.UI.createWindow();
-		$.nav = Ti.UI.MobileWeb.createNavigationGroup({
+	if( OS_MOBILEWEB ) {
+		$.window = Ti.UI.createWindow( { id: "window" } );
+		$.addTopLevelView( $.window );
+		$.root = $.args.root ? Alloy.createController( $.args.root.moduleName, $.args.root ).getViewEx( { recurse: true } ) : Ti.UI.createWindow();
+		$.nav = Ti.UI.MobileWeb.createNavigationGroup( {
 			window: $.root,
 			id: "nav"
-		});
-		$.window.add($.nav);
-		$.navigate = function(payload) {
+		} );
+		$.window.add( $.nav );
+		$.navigate = function( payload ) {
 			__local_prefix = $.__controllerPath + ".navigate: ";
-			apm.leaveBreadcrumb(__local_prefix + "entering");
+			apm.leaveBreadcrumb( __local_prefix + "entering" );
 			var window;
 			try {
-				window = createWindow(payload);
-			} catch(err) {
-				console.error(err);
+				window = createWindow( payload );
+			} catch( err ) {
+				console.error( err );
 			}
-			window && $.nav.open(window);
-			window_stack.push(window);
-			apm.leaveBreadcrumb(__local_prefix + "exiting");
+			window && $.nav.open( window );
+			window_stack.push( window );
+			apm.leaveBreadcrumb( __local_prefix + "exiting" );
 		};
 		//TODO:  This should probably be handled by a close function which is called by the navigator...
-		$.goHome = function(payload) {
+		$.goHome = function( payload ) {
 			__local_prefix = $.__controllerPath + ".goHome: ";
-			for(var i = 0; i < window_stack.length; i++) {
-				window_stack[i].close();
+			for( var i = 0; i < window_stack.length; i++ ) {
+				window_stack[ i ].close();
 			}
-			apm.leaveBreadcrumb(__local_prefix + "exiting");
+			apm.leaveBreadcrumb( __local_prefix + "exiting" );
 		};
 	}
 
-	if(OS_WINDOWS) {
-		$.root = $.args.root ? Alloy.createController($.args.root.moduleName, $.args.root).getViewEx({ recurse: true }) : Ti.UI.createWindow();
-		$.root && $.addTopLevelView($.root);
-		$.navigate = function(payload) {
+	if( OS_WINDOWS ) {
+		$.root = $.args.root ? Alloy.createController( $.args.root.moduleName, $.args.root ).getViewEx( { recurse: true } ) : Ti.UI.createWindow();
+		$.root && $.addTopLevelView( $.root );
+		$.navigate = function( payload ) {
 			__local_prefix = $.__controllerPath + ".navigate: ";
-			apm.leaveBreadcrumb(__local_prefix + "entering");
+			apm.leaveBreadcrumb( __local_prefix + "entering" );
 			var window;
 			try {
-				window = createWindow(payload);
-			} catch(err) {
-				console.error(err);
+				window = createWindow( payload );
+			} catch( err ) {
+				console.error( err );
 			}
 			window && window.open();
-			apm.leaveBreadcrumb(__local_prefix + "exiting");
+			apm.leaveBreadcrumb( __local_prefix + "exiting" );
 		}
 	}
-	apm.leaveBreadcrumb(__prefix + "exiting");
-});
+	apm.leaveBreadcrumb( __prefix + "exiting" );
+} );
