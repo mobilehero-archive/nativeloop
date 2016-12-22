@@ -1,6 +1,6 @@
 {
   "name": "nativeloop",
-  "version": "0.0.3",
+  "version": "0.0.5-beta.0",
   "description": "Tool for building {nativeloop} mobile apps",
   "keywords": [
     "nativeloop",
