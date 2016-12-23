@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 /***
  *                          __     _  __       __                     
  *       ____ ___   ____   / /_   (_)/ /___   / /_   ___   _____ ____ 
@@ -16,24 +16,24 @@
  * 
  */
 
-var path = require("path");
-var _ = require('lodash');
+var path = require( "path" );
+var _ = require( 'lodash' );
 var logger;
 
-function plugin(params) {
+function plugin( params ) {
 
 	logger = params.logger;
 	params.dirname = params.dirname || params.event.dir.resourcesPlatform;
 
-	_.defaults(params.config, {
+	_.defaults( params.config, {
 		modules: {}
-	});
+	} );
 
-	logger.debug("fixing alloy require in directory: " + params.dirname);
+	logger.debug( "fixing alloy require in directory: " + params.dirname );
 	// logger.trace("nodejs params: " + JSON.stringify(params.config, null, 2));
-	var r = require('./resolver/resolve-fix');
-	var resolveFix = new r(params.dirname, params.modules, params.includes, logger);
-	var registry = JSON.stringify(resolveFix.registry, null, 4);
+	var r = require( './resolver/resolve-fix' );
+	var resolveFix = new r( params.dirname, params.modules, params.includes, logger );
+	var registry = JSON.stringify( resolveFix.registry, null, 4 );
 	//console.warn(registry);
 }
 
