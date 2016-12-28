@@ -3,9 +3,21 @@
 	//-------- Editor configuration --------
 
 	// Configure file associations to languages (e.g. "*.extension": "html"). These have precedence over the default associations of the languages installed.
-	"files.associations": { 
-		"*.tss": "javascript"
+	"files.associations": {
+		"*.tss": "javascript",
+		"*.jmk": "javascript"
 	},
+
+	// The number of spaces a tab is equal to.
+	"editor.tabSize": 4,
+
+	// Insert spaces when pressing Tab.
+	"editor.insertSpaces": false,
+
+	// When opening a file, `editor.tabSize` and `editor.insertSpaces` will be detected based on the file contents.
+	"editor.detectIndentation": false,
+
+
 
 	//-------- Files configuration --------
 
@@ -32,6 +44,25 @@
 		"**/Resources": true
 	},
 
+	// HTML
+
+	// Maximum amount of characters per line (0 = disable).
+	"html.format.wrapLineLength": 150,
+
+	// Format and indent {{#foo}} and {{/foo}}.
+	"html.format.indentHandlebars": true,
+
+	"html.format.extraLiners": true,
+
+	// TypeScript
+
+	// Defines space handling after opening and before closing non empty parenthesis
+	"javascript.format.insertSpaceAfterOpeningAndBeforeClosingNonemptyParenthesis": true,
+
+	// Defines space handling after opening and before closing non empty brackets
+	"javascript.format.insertSpaceAfterOpeningAndBeforeClosingNonemptyBrackets": true,
+
+
 	// File extensions that can be beautified as HTML.
 	"beautify.HTMLfiles": [
 		"htm",
@@ -46,6 +77,44 @@
 		"jsbeautifyrc",
 		"jshintrc",
 		"tss"
-	]
-	
+	],
+
+	// Set path/file matchers to ignore when attempting to beautify on save. Uses glob path matching.
+	"beautify.onSaveIgnore": [
+		"**/*+(.|_|-)min.*"
+	],
+
+	// Use `.editorconfig` settings
+	"beautify.editorconfig": false,
+
+	// Link file types to the beautifier type
+	"beautify.language": {
+		"js": {
+			"type": [
+				"javascript",
+				"json"
+			],
+			"filename": [
+				".jshintrc",
+				".jsbeautify"
+			],
+			"ext": [ "js",
+				"json",
+				"jsbeautifyrc",
+				"jshintrc",
+				"tss"
+			]
+		},
+		"css": [
+			"css",
+			"scss"
+		],
+		"html": [
+			"htm",
+			"html",
+			"xml",
+			"entitlements"
+		]
+	},
+
 }
