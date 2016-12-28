@@ -33,7 +33,7 @@ var minimatch = require( 'minimatch' );
  * @param {string[]} [params.includes] - Array of glob patterns to match files to be included in search
  * @param {object} [logger=console] - Alloy logger object
  */
-module.exports = function ( rootpath, registry, includes, logger ) {
+module.exports = function( rootpath, registry, includes, logger ) {
 
 	registry = registry || {};
 
@@ -59,7 +59,7 @@ module.exports = function ( rootpath, registry, includes, logger ) {
 		var source = fs.readFileSync( fullpath, 'utf8' );
 		var test = /\/\/ALLOY-RESOLVER/.test( source );
 		logger.trace( "CODE INJECTED ALREADY: " + test );
-		if ( !test ) {
+		if( !test ) {
 			source = source.replace( /(var\s+Alloy[^;]+;)/g, "$1\n//ALLOY-RESOLVER\nvar process=require('process');\nAlloy.resolve=new (require('nativeloop/resolver'))().resolve;\n" );
 			fs.writeFileSync( fullpath, source );
 		}
@@ -79,7 +79,7 @@ module.exports = function ( rootpath, registry, includes, logger ) {
 		var alloyResolveRegex = /require\(\s*Alloy\.resolve\(/g
 
 
-		source = source.replace( requireRegex, function ( entireText, requireText, requestedModule ) {
+		source = source.replace( requireRegex, function( entireText, requireText, requestedModule ) {
 			// logger.error('entireText: ' + entireText);
 
 			var isStaticRequire = staticRequireRegex.test( entireText );
@@ -88,18 +88,18 @@ module.exports = function ( rootpath, registry, includes, logger ) {
 			// logger.trace('isStaticRequire: ' + isStaticRequire);
 			// logger.trace('isDynamicAlloyRequire: ' + isDynamicAlloyRequire);
 			// logger.trace('isAlloyResolve: ' + isAlloyResolve);
-			if ( isStaticRequire ) {
-				var revisedText = entireText.replace( staticRequireRegex, function ( $1, $2, $3 ) {
+			if( isStaticRequire ) {
+				var revisedText = entireText.replace( staticRequireRegex, function( $1, $2, $3 ) {
 					var resolved_path = resolver.resolve( $3, basepath );
 					return 'require("' + resolved_path + '")';
 				} );
 				// logger.debug('returning: ' + revisedText);
 				return revisedText;
-			} else if ( isDynamicAlloyRequire ) {
+			} else if( isDynamicAlloyRequire ) {
 				// logger.trace('fixFiles: found dynamic alloy require');
 				// logger.debug('returning: ' + entireText);
 				return entireText;
-			} else if ( isAlloyResolve ) {
+			} else if( isAlloyResolve ) {
 				// logger.trace('fixFiles: found Alloy.resolve require');
 				// logger.debug('returning: ' + entireText);
 				return entireText;
@@ -146,7 +146,7 @@ module.exports = function ( rootpath, registry, includes, logger ) {
 		var isExtendedLengthPath = /^\\\\\?\\/.test( input );
 		var hasNonAscii = /[^\x00-\x80]+/.test( input );
 
-		if ( isExtendedLengthPath || hasNonAscii ) {
+		if( isExtendedLengthPath || hasNonAscii ) {
 			return input;
 		}
 
@@ -163,10 +163,10 @@ module.exports = function ( rootpath, registry, includes, logger ) {
 	function findFiles( rootpath, patterns ) {
 		// logger.trace('inside findFiles()');
 		var patterns = patterns || [ '**' ];
-		if ( _.isString( patterns ) ) {
+		if( _.isString( patterns ) ) {
 			patterns = [ patterns ];
 		}
-		var files = _.map( fs.readdirSyncRecursive( rootpath ), function ( filename ) {
+		var files = _.map( fs.readdirSyncRecursive( rootpath ), function( filename ) {
 			return path.posix.sep + replaceBackSlashes( filename );
 		} );
 		var matchedFiles = match( files, patterns, {
@@ -174,7 +174,7 @@ module.exports = function ( rootpath, registry, includes, logger ) {
 			matchBase: true,
 			dot: true,
 		} );
-		return _.filter( matchedFiles, function ( file ) {
+		return _.filter( matchedFiles, function( file ) {
 			return !fs.statSync( path.join( rootpath, file ) ).isDirectory();
 		} ) || [];
 
@@ -192,18 +192,18 @@ module.exports = function ( rootpath, registry, includes, logger ) {
 	function match( list, patterns, options ) {
 		list = list || [];
 		patterns = patterns || [];
-		if ( _.isString( patterns ) ) {
+		if( _.isString( patterns ) ) {
 			patterns = [ patterns ];
 		}
 
-		if ( list.length === 0 || patterns.length === 0 ) {
+		if( list.length === 0 || patterns.length === 0 ) {
 			return [];
 		}
 
 		options = options || {};
-		return patterns.reduce( function ( ret, pattern ) {
+		return patterns.reduce( function( ret, pattern ) {
 			var process = _.union
-			if ( pattern[ 0 ] === '!' ) {
+			if( pattern[ 0 ] === '!' ) {
 				pattern = pattern.slice( 1 );
 				process = _.difference;
 			}
@@ -220,17 +220,17 @@ module.exports = function ( rootpath, registry, includes, logger ) {
 		var allfiles = findFiles( rootpath, [ '**/*.js', '**/*.json' ] );
 		// logger.debug(JSON.stringify(allfiles, null, 2));
 
-		_.forEach( allfiles, function ( filepath ) {
+		_.forEach( allfiles, function( filepath ) {
 			registry.files.push( filepath );
 		} );
 
-		var packagepaths = _.filter( allfiles, function ( filepath ) {
-			return ( /.+(package\.json)/.test( filepath ) );
+		var packagepaths = _.filter( allfiles, function( filepath ) {
+			return( /.+(package\.json)/.test( filepath ) );
 		} );
-		_.forEach( packagepaths, function ( filepath ) {
+		_.forEach( packagepaths, function( filepath ) {
 			var content = fs.readFileSync( path.posix.join( rootpath, filepath ), 'utf8' );
 			var json = JSON.parse( content );
-			if ( json.main ) {
+			if( json.main ) {
 				registry.directories.push( {
 					id: path.posix.dirname( filepath ),
 					path: path.posix.resolve( path.posix.join( path.posix.dirname( filepath ), json.main ) )
@@ -238,15 +238,15 @@ module.exports = function ( rootpath, registry, includes, logger ) {
 			}
 		} );
 
-		var indexpaths = _.filter( allfiles, function ( filepath ) {
-			return ( /.+(index\.js)/.test( filepath ) );
+		var indexpaths = _.filter( allfiles, function( filepath ) {
+			return( /.+(index\.js)/.test( filepath ) );
 		} );
 
-		_.forEach( indexpaths, function ( filepath ) {
-			var existingdir = _.find( registry.directories, function ( dir ) {
+		_.forEach( indexpaths, function( filepath ) {
+			var existingdir = _.find( registry.directories, function( dir ) {
 				return dir.id === path.posix.dirname( filepath );
 			} );
-			if ( !existingdir ) {
+			if( !existingdir ) {
 				registry.directories.push( {
 					id: path.posix.dirname( filepath ),
 					path: filepath
@@ -288,15 +288,15 @@ module.exports = function ( rootpath, registry, includes, logger ) {
 
 	console.error( 'registry: ' + JSON.stringify( registry, null, 2 ) );
 
-	
+
 	writeRegistry();
 	// fixFile('/node_modules/nativeloop/resolver.js');
-	fixFile('/nativeloop/resolver.js');
+	fixFile( '/nativeloop/resolver.js' );
 
 	console.error( 'registry: ' + JSON.stringify( registry, null, 2 ) );
 
 	Object.defineProperty( this, 'registry', {
-		get: function () {
+		get: function() {
 			return _.clone( registry );
 		},
 		enumerable: true,

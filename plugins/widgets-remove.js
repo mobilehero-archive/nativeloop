@@ -44,7 +44,7 @@ function plugin( params ) {
 	delete config.dependencies.nativeloop;
 
 	_.forEach( _.keys( config.widgets ), ( widget ) => {
-		if ( config.dependencies[ widget ] && config.dependencies[ widget ] === config.widgets[ widget ] ) {
+		if( config.dependencies[ widget ] && config.dependencies[ widget ] === config.widgets[ widget ] ) {
 			delete config.dependencies[ widget ];
 		}
 	} );

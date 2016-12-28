@@ -16,13 +16,13 @@
  * 
  */
 
-var path = require('path');
-var fs = require('fs-extra');
+var path = require( 'path' );
+var fs = require( 'fs-extra' );
 // var wrench = require('wrench');
-var _ = require('lodash');
+var _ = require( 'lodash' );
 var logger;
-var babel = require('babel-core');
-var minimatch = require('minimatch');
+var babel = require( 'babel-core' );
+var minimatch = require( 'minimatch' );
 
 /**
  * Run babel tranformations on mobile source code
@@ -71,26 +71,26 @@ These files maps the generated Titanium files in the Resources directory to the 
  * @param {object} [params.options.env={}] - This is an object of keys that represent different environments. For example, you may have: { env: { production: { someOption: true } } } which will use those options when the enviroment variable BABEL_ENV is set to "production". If BABEL_ENV isn’t set then NODE_ENV will be used, if it’s not set then it defaults to "development"
  * @param {string} [params.options.extends=null] - A path to an .babelrc file to extend
  */
-function plugin(params) {
+function plugin( params ) {
 
 	logger = params.logger;
-	params.dirname = params.dirname ? _.template(params.dirname)(params) : params.event.dir.resourcesPlatform;
+	params.dirname = params.dirname ? _.template( params.dirname )( params ) : params.event.dir.resourcesPlatform;
 
-	_.defaults(params, {
+	_.defaults( params, {
 		options: {},
-		includes: ['**/*.js', '!backbone.js', '!**/alloy/lodash.js']
-	});
+		includes: [ '**/*.js', '!backbone.js', '!**/alloy/lodash.js' ]
+	} );
 
-	if(params.code) {
+	if( params.code ) {
 		// logger.trace(params.code);
-		logger.trace("running babel on code");
-		params.code = transformCode(params.code, params.options);
+		logger.trace( "running babel on code" );
+		params.code = transformCode( params.code, params.options );
 	} else {
-		logger.trace("running babel in directory: " + params.dirname);
-		var files = findFiles(params.dirname, params.includes);
-		_.forEach(files, function(file) {
-			transformFile(path.join(params.dirname, file), params.options);
-		});
+		logger.trace( "running babel in directory: " + params.dirname );
+		var files = findFiles( params.dirname, params.includes );
+		_.forEach( files, function( file ) {
+			transformFile( path.join( params.dirname, file ), params.options );
+		} );
 	}
 }
 
@@ -101,15 +101,15 @@ function plugin(params) {
  * @param {string} intput - value needing to have backslashes replaced in.
  * @returns {string}
  */
-function replaceBackSlashes(input) {
-	var isExtendedLengthPath = /^\\\\\?\\/.test(input);
-	var hasNonAscii = /[^\x00-\x80]+/.test(input);
+function replaceBackSlashes( input ) {
+	var isExtendedLengthPath = /^\\\\\?\\/.test( input );
+	var hasNonAscii = /[^\x00-\x80]+/.test( input );
 
-	if(isExtendedLengthPath || hasNonAscii) {
+	if( isExtendedLengthPath || hasNonAscii ) {
 		return input;
 	}
 
-	return input.replace(/\\/g, '/');
+	return input.replace( /\\/g, '/' );
 };
 
 /**
@@ -119,22 +119,22 @@ function replaceBackSlashes(input) {
  * @param {string[]|string} [patterns="**"] - Pattern(s) to be used when attempting to match files found
  * @returns {string[]} - Matched file paths
  */
-function findFiles(rootpath, patterns) {
-	var patterns = patterns || ['**'];
-	if(_.isString(patterns)) {
-		patterns = [patterns];
+function findFiles( rootpath, patterns ) {
+	var patterns = patterns || [ '**' ];
+	if( _.isString( patterns ) ) {
+		patterns = [ patterns ];
 	}
-	var files = _.map(fs.readdirSyncRecursive(rootpath), function(filename) {
-		return path.posix.sep + replaceBackSlashes(filename);
-	});	
-	var matchedFiles = match(files, patterns, {
+	var files = _.map( fs.readdirSyncRecursive( rootpath ), function( filename ) {
+		return path.posix.sep + replaceBackSlashes( filename );
+	} );
+	var matchedFiles = match( files, patterns, {
 		nocase: true,
 		matchBase: true,
 		dot: true,
-	});
-	return _.filter(matchedFiles, function(file) {
-		return !fs.statSync(path.join(rootpath, file)).isDirectory();
-	}) || [];
+	} );
+	return _.filter( matchedFiles, function( file ) {
+		return !fs.statSync( path.join( rootpath, file ) ).isDirectory();
+	} ) || [];
 
 };
 
@@ -147,26 +147,26 @@ function findFiles(rootpath, patterns) {
  * @param {object} options
  * @returns {string[]}
  */
-function match(list, patterns, options) {
+function match( list, patterns, options ) {
 	list = list || [];
 	patterns = patterns || [];
-	if(_.isString(patterns)) {
-		patterns = [patterns];
+	if( _.isString( patterns ) ) {
+		patterns = [ patterns ];
 	}
 
-	if(list.length === 0 || patterns.length === 0) {
+	if( list.length === 0 || patterns.length === 0 ) {
 		return [];
 	}
 
 	options = options || {};
-	return patterns.reduce(function(ret, pattern) {
+	return patterns.reduce( function( ret, pattern ) {
 		var process = _.union
-		if(pattern[0] === '!') {
-			pattern = pattern.slice(1);
+		if( pattern[ 0 ] === '!' ) {
+			pattern = pattern.slice( 1 );
 			process = _.difference;
 		}
-		return process(ret, minimatch.match(list, pattern, options));
-	}, []);
+		return process( ret, minimatch.match( list, pattern, options ) );
+	}, [] );
 };
 
 
@@ -184,11 +184,11 @@ function match(list, patterns, options) {
  * @param {object} [options.env={}] - This is an object of keys that represent different environments. For example, you may have: { env: { production: { someOption: true } } } which will use those options when the enviroment variable BABEL_ENV is set to "production". If BABEL_ENV isn’t set then NODE_ENV will be used, if it’s not set then it defaults to "development"
  * @param {string} [options.extends=null] - A path to an .babelrc file to extend
  */
-function transformFile(filepath, options) {
-	logger.trace("transforming file - " + filepath);
-	var content = fs.readFileSync(filepath, 'utf8');
-	var result = transformCode(content, options);
-	fs.writeFileSync(filepath, result);
+function transformFile( filepath, options ) {
+	logger.trace( "transforming file - " + filepath );
+	var content = fs.readFileSync( filepath, 'utf8' );
+	var result = transformCode( content, options );
+	fs.writeFileSync( filepath, result );
 }
 
 /**
@@ -205,8 +205,8 @@ function transformFile(filepath, options) {
  * @param {object} [options.env={}] - This is an object of keys that represent different environments. For example, you may have: { env: { production: { someOption: true } } } which will use those options when the enviroment variable BABEL_ENV is set to "production". If BABEL_ENV isn’t set then NODE_ENV will be used, if it’s not set then it defaults to "development"
  * @param {string} [options.extends=null] - A path to an .babelrc file to extend
  */
-function transformCode(code, options) {
-	var result = babel.transform(code, options);
+function transformCode( code, options ) {
+	var result = babel.transform( code, options );
 	var modified = result.code;
 	return modified;
 }

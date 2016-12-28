@@ -6,11 +6,11 @@ module.exports = utils;
 
 
 var fs = require( 'fs-extra' );
-fs.readdirSyncRecursive = function ( dir ) {
-	console.error('dir: ' + JSON.stringify(dir, null, 2));
-	return _.map( fs.walkSync( dir ), function ( filename ) {
+fs.readdirSyncRecursive = function( dir ) {
+	console.error( 'dir: ' + JSON.stringify( dir, null, 2 ) );
+	return _.map( fs.walkSync( dir ), function( filename ) {
 		// var x = path.posix.sep + replaceBackSlashes( filename );
-		console.error('filename: ' + JSON.stringify(filename, null, 2));
+		console.error( 'filename: ' + JSON.stringify( filename, null, 2 ) );
 		var x = path.relative( dir, filename );
 		console.error( x );
 		return x;
@@ -27,11 +27,11 @@ fs.readdirSyncRecursive = function ( dir ) {
  * @param {string} intput - value needing to have backslashes replaced in.
  * @returns {string}
  */
-utils.replaceBackSlashes = function ( input ) {
+utils.replaceBackSlashes = function( input ) {
 	var isExtendedLengthPath = /^\\\\\?\\/.test( input );
 	var hasNonAscii = /[^\x00-\x80]+/.test( input );
 
-	if ( isExtendedLengthPath || hasNonAscii ) {
+	if( isExtendedLengthPath || hasNonAscii ) {
 		return input;
 	}
 

@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 /***
  *                          __     _  __       __                     
  *       ____ ___   ____   / /_   (_)/ /___   / /_   ___   _____ ____ 
@@ -16,22 +16,22 @@
  * 
  */
 
-var _ = require('lodash');
+var _ = require( 'lodash' );
 
-function plugin(params) {
+function plugin( params ) {
 
-	params.dirname = params.dirname ? _.template(params.dirname)(params) : params.event.dir.lib;
-	params.args = params.args ? _.map(params.args, function(arg) {
-		return _.template(arg)(params);
-	}) : ["install"];
+	params.dirname = params.dirname ? _.template( params.dirname )( params ) : params.event.dir.lib;
+	params.args = params.args ? _.map( params.args, function( arg ) {
+		return _.template( arg )( params );
+	} ) : [ "install" ];
 
-	params.logger.trace("running npm in directory: " + params.dirname);
-	params.logger.trace("npm " + params.args.join(" "));
+	params.logger.trace( "running npm in directory: " + params.dirname );
+	params.logger.trace( "npm " + params.args.join( " " ) );
 
-	return require("@geek/spawn").spawnSync("npm", params.args, {
+	return require( "@geek/spawn" ).spawnSync( "npm", params.args, {
 		cwd: params.dirname
-	});
-	
+	} );
+
 }
 
 module.exports.execute = plugin;
@@ -39,7 +39,7 @@ module.exports.tasks = [
 	{
 		"module": module.id,
 		"dirname": "${event.dir.lib}",
-		"args": ["install"],
+		"args": [ "install" ],
 		"events": "preload"
 	}
 ]

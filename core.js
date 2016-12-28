@@ -47,7 +47,7 @@ module.exports = handler;
 
 
 
-var init = function ( params ) {
+var init = function( params ) {
 	// console.debug("params: " + JSON.stringify(params, null, 2));
 
 	CONST = params.constants;
@@ -61,7 +61,7 @@ var init = function ( params ) {
 	// console.error('U.getWidgetDirectories.findWidgetAsNodeModule: ' + U.getWidgetDirectories.findWidgetAsNodeModule.toString());
 
 
-	params.resolve.sync = _.wrap( params.resolve.sync, function ( func, id, opts ) {
+	params.resolve.sync = _.wrap( params.resolve.sync, function( func, id, opts ) {
 		console.error( 'you are here → resolve.sync: ' + id );
 		var response;
 		try {
@@ -69,13 +69,13 @@ var init = function ( params ) {
 			console.error( 'you are here → resolve.sync: after 1st' );
 			console.error( 'response: ' + JSON.stringify( response, null, 2 ) );
 			return response;
-		} catch ( error ) {
+		} catch( error ) {
 
 			// var regex = new RegExp( CONST.NPM_WIDGET_PREFIX + '([^\/]*)\/widget' );
 			var regex = new RegExp( CONST.NPM_WIDGET_PREFIX + '(.*)\/widget' );
 			var found = regex.exec( id );
 			console.error( 'found[1]: ' + JSON.stringify( found[ 1 ], null, 2 ) );
-			if ( found && found[ 1 ] ) {
+			if( found && found[ 1 ] ) {
 				console.error( 'you are here → resolve.sync: before 2nd -- ' + found[ 1 ] );
 				response = func( found[ 1 ] + '/widget', opts );
 				console.error( 'you are here → resolve.sync: after 2nd' );
@@ -84,17 +84,17 @@ var init = function ( params ) {
 		}
 	} );
 
-	params.jsonlint.parse = _.wrap( params.jsonlint.parse, function ( func, input, opts ) {
+	params.jsonlint.parse = _.wrap( params.jsonlint.parse, function( func, input, opts ) {
 		debug.error( 'you are here → jsonlint.parse: ' );
-		debug.warn('input: ' + JSON.stringify(input, null, 2));
+		debug.warn( 'input: ' + JSON.stringify( input, null, 2 ) );
 
 		var result = func( input );
-		return require('./fix-config').addWidgets({ input: result, logger: debug });
+		return require( './fix-config' ).addWidgets( { input: result, logger: debug } );
 		// return hjson.parse( input, opts );
 	} );
 
 
-	U.getWidgetDirectories = _.wrap( U.getWidgetDirectories, function ( func, options ) {
+	U.getWidgetDirectories = _.wrap( U.getWidgetDirectories, function( func, options ) {
 		console.log( "********* getWidgetDirectories **********" );
 		return func( options );
 	} );
@@ -108,7 +108,7 @@ var init = function ( params ) {
 	U.XML.getAlloyFromFile = handler.getAlloyFromFile;
 
 	console.log( "********* WRAPPING uglifyjs.parse **********" );
-	params.uglifyjs.parse = _.wrap( params.uglifyjs.parse, function ( func, code, options ) {
+	params.uglifyjs.parse = _.wrap( params.uglifyjs.parse, function( func, code, options ) {
 		console.log( "********* PRE:PARSE **********" );
 		var params = {
 			code: code
@@ -132,19 +132,19 @@ var init = function ( params ) {
 	params.task( "compile:app.js", handler.appjs );
 }
 
-handler.getAlloyFromFile = function ( filename ) {
+handler.getAlloyFromFile = function( filename ) {
 
 	// console.trace("***** INSIDE getAlloyFromFile()");
 	var doc = U.XML.parseFromFile( filename );
 	var docRoot = doc.documentElement;
 
-	if ( _.toLower( docRoot.nodeName ) === "nativeloop" ) {
+	if( _.toLower( docRoot.nodeName ) === "nativeloop" ) {
 		docRoot.nodeName = CONST.ROOT_NODE;
 		docRoot.setAttribute( "module", "/nativeloop" );
 	}
 
 	// Make sure the markup has a top-level <Alloy> tag
-	else if ( docRoot.nodeName !== CONST.ROOT_NODE ) {
+	else if( docRoot.nodeName !== CONST.ROOT_NODE ) {
 		exports.die( [
 			'Invalid view file "' + filename + '".',
 			'All view markup must have a top-level <Alloy> tag'
@@ -171,16 +171,16 @@ handler.getAlloyFromFile = function ( filename ) {
 
 function splitTasks( tasks ) {
 	var results = [];
-	if ( !_.isArray( tasks ) ) {
+	if( !_.isArray( tasks ) ) {
 		tasks = [ tasks ];
 	}
 	// handler.logger.trace("splitting tasks...");
 	// handler.logger.trace("tasks: " + JSON.stringify(tasks, null, 2));
-	_.forEach( tasks, function ( task ) {
+	_.forEach( tasks, function( task ) {
 
-		if ( _.isArray( task.events ) && !_.isEmpty( task.events ) ) {
+		if( _.isArray( task.events ) && !_.isEmpty( task.events ) ) {
 			// handler.logger.trace("found events to split");
-			_.forEach( task.events, function ( event ) {
+			_.forEach( task.events, function( event ) {
 				var splitTask = _.cloneDeep( task );
 				splitTask.events = event;
 				results.push( splitTask );
@@ -194,7 +194,7 @@ function splitTasks( tasks ) {
 
 }
 
-var _init = _.once( function () {
+var _init = _.once( function() {
 	loadConfig();
 	configureTasks();
 } );
@@ -214,9 +214,9 @@ function configureTasks( tasks ) {
 	var configuredTasks = [];
 	var importedTasks = [];
 	// handler.logger.trace("tasks coming into configureTasks(): " + JSON.stringify(tasks, null, 2));
-	_.forEach( tasks, function ( task ) {
+	_.forEach( tasks, function( task ) {
 		// handler.logger.trace("task: " + JSON.stringify(task, null, 2));
-		if ( _.isString( task ) ) {
+		if( _.isString( task ) ) {
 			handler.logger.trace( "getting default tasks for module: " + task );
 			var target = require( resolve.sync( task, {
 				basedir: handler.event.dir.project
@@ -235,7 +235,7 @@ function configureTasks( tasks ) {
 	} );
 
 
-	if ( !_.isEmpty( importedTasks ) ) {
+	if( !_.isEmpty( importedTasks ) ) {
 		handler.logger.debug( "Configuring importedTasks" )
 		configuredTasks = configuredTasks.concat( configureTasks( importedTasks ) );
 	} else {
@@ -245,7 +245,7 @@ function configureTasks( tasks ) {
 	return configuredTasks;
 }
 
-var loadConfig = function () {
+var loadConfig = function() {
 
 	handler.logger.debug( "Loading alloy config file" );
 	handler.config = require( path.join( handler.event.dir.resourcesPlatform, "alloy", "CFG" ) );
@@ -255,10 +255,10 @@ var loadConfig = function () {
 
 Object.defineProperty( handler, "event", {
 
-	get: function () {
+	get: function() {
 		return _event;
 	},
-	set: function ( event ) {
+	set: function( event ) {
 		_event = event;
 		event.dir.resourcesPlatform = path.join( event.dir.resources, event.alloyConfig.platform === 'ios' ? 'iphone' : event.alloyConfig.platform );
 	},
@@ -275,7 +275,7 @@ function executeScripts( eventName, params ) {
 	} ), "weight" );
 	params = params || {};
 
-	_.forEach( tasks, function ( task ) {
+	_.forEach( tasks, function( task ) {
 
 		//TODO:  Check to make sure task is an object...
 
@@ -295,7 +295,7 @@ function executeScripts( eventName, params ) {
 		} ) );
 		_.isFunction( target.execute ) && target.execute( taskParams );
 
-		if ( taskParams.code ) {
+		if( taskParams.code ) {
 			// handler.logger.trace(taskParams.code);
 			params.code = taskParams.code;
 		}
@@ -305,8 +305,8 @@ function executeScripts( eventName, params ) {
 }
 
 var events = [ "preload", "precompile", "postcompile", "appjs" ];
-_.forEach( events, function ( eventName ) {
-	handler[ eventName ] = function ( event, logger ) {
+_.forEach( events, function( eventName ) {
+	handler[ eventName ] = function( event, logger ) {
 		// handler.logger = logger;
 		debug.trace = logger.trace.bind( logger );
 		debug.debug = logger.debug.bind( logger );

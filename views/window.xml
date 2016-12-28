@@ -1,5 +1,3 @@
 <Alloy>
-
-<Window id="window" />
-
+	<Window id="window" />
 </Alloy>

@@ -16,9 +16,9 @@
  * 
  */
 
-var path = require('path');
-var _ = require('lodash');
-var fs = require('fs-extra');
+var path = require( 'path' );
+var _ = require( 'lodash' );
+var fs = require( 'fs-extra' );
 var logger;
 
 /**
@@ -26,14 +26,14 @@ var logger;
  * @function replace_content
  * @param {string} fullpath
  */
-function replace_content(fullpath) {
-	var source = fs.readFileSync(fullpath, 'utf8');
+function replace_content( fullpath ) {
+	var source = fs.readFileSync( fullpath, 'utf8' );
 	var regex = /(require\s*\(\s*['"].*alloy\/underscore['"]\s*\))._/g
-	var test = regex.test(source);
-	if(test) {
-		logger.trace('Fixing file: ' + fullpath);
-		source = source.replace(regex, '$1');
-		fs.writeFileSync(fullpath, source);
+	var test = regex.test( source );
+	if( test ) {
+		logger.trace( 'Fixing file: ' + fullpath );
+		source = source.replace( regex, '$1' );
+		fs.writeFileSync( fullpath, source );
 	}
 }
 
@@ -42,17 +42,17 @@ function replace_content(fullpath) {
  * @function plugin
  * @param {object} params
  */
-function plugin(params) {
+function plugin( params ) {
 	logger = params.logger;
-	params.dirname = params.dirname ? _.template(params.dirname)(params) : params.event.dir.resourcesPlatform;
-	logger.trace("fixing underscore in directory: " + params.dirname);
+	params.dirname = params.dirname ? _.template( params.dirname )( params ) : params.event.dir.resourcesPlatform;
+	logger.trace( "fixing underscore in directory: " + params.dirname );
 
-	replace_content(path.join(params.dirname, 'alloy.js'));
-	replace_content(path.join(params.dirname, 'alloy', 'sync', 'properties.js'));
-	replace_content(path.join(params.dirname, 'alloy', 'sync', 'sql.js'));
-	replace_content(path.join(params.dirname, 'alloy', 'constants.js'));
+	replace_content( path.join( params.dirname, 'alloy.js' ) );
+	replace_content( path.join( params.dirname, 'alloy', 'sync', 'properties.js' ) );
+	replace_content( path.join( params.dirname, 'alloy', 'sync', 'sql.js' ) );
+	replace_content( path.join( params.dirname, 'alloy', 'constants.js' ) );
 
-	injectCode(params);
+	injectCode( params );
 
 }
 
@@ -61,15 +61,15 @@ function plugin(params) {
  * @function injectCode
  * @param params {object}
  */
-function injectCode(params) {
+function injectCode( params ) {
 
-	var fullpath = path.join(params.dirname, 'app.js');
-	var source = fs.readFileSync(fullpath, 'utf8');
-	var test = /\/\/NATIVELOOP: UNDERSCORE-FIX/.test(source);
-	logger.trace('NATIVELOOP: UNDERSCORE-FIX -- CODE INJECTED ALREADY: ' + test);
-	if(!test) {
-		source = source.replace(/(var\s+Alloy[^;]+;)/g, "$1\n//NATIVELOOP: UNDERSCORE-FIX\nif(_.VERSION !== \"1.6.0\") {\r\n\tconsole.info(\"Wrapping _.template()\");\r\n\t_.mixin({\r\n\t\ttemplate: _.wrap(_.template, function(func, text, data, options) {\r\n\t\t\tif(options) {\r\n\t\t\t\t\/\/ If a third parameter was passed in, we hope that the older version of template was expected here.\r\n\t\t\t\treturn func(text, options)(data);\r\n\t\t\t} else {\r\n\t\t\t\t\/\/ Here we hope they intended to use the updated version of template...\r\n\t\t\t\treturn func(text, data);\r\n\t\t\t}\r\n\t\t})\r\n\t});\r\n}");
-		fs.writeFileSync(fullpath, source);
+	var fullpath = path.join( params.dirname, 'app.js' );
+	var source = fs.readFileSync( fullpath, 'utf8' );
+	var test = /\/\/NATIVELOOP: UNDERSCORE-FIX/.test( source );
+	logger.trace( 'NATIVELOOP: UNDERSCORE-FIX -- CODE INJECTED ALREADY: ' + test );
+	if( !test ) {
+		source = source.replace( /(var\s+Alloy[^;]+;)/g, "$1\n//NATIVELOOP: UNDERSCORE-FIX\nif(_.VERSION !== \"1.6.0\") {\r\n\tconsole.info(\"Wrapping _.template()\");\r\n\t_.mixin({\r\n\t\ttemplate: _.wrap(_.template, function(func, text, data, options) {\r\n\t\t\tif(options) {\r\n\t\t\t\t\/\/ If a third parameter was passed in, we hope that the older version of template was expected here.\r\n\t\t\t\treturn func(text, options)(data);\r\n\t\t\t} else {\r\n\t\t\t\t\/\/ Here we hope they intended to use the updated version of template...\r\n\t\t\t\treturn func(text, data);\r\n\t\t\t}\r\n\t\t})\r\n\t});\r\n}" );
+		fs.writeFileSync( fullpath, source );
 	}
 }
 

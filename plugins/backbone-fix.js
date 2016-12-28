@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 /***
  *                          __     _  __       __                     
  *       ____ ___   ____   / /_   (_)/ /___   / /_   ___   _____ ____ 
@@ -16,9 +16,9 @@
  * 
  */
 
-var path = require("path");
-var _ = require('lodash');
-var fs = require('fs');
+var path = require( "path" );
+var _ = require( 'lodash' );
+var fs = require( 'fs' );
 var logger;
 
 /**
@@ -26,26 +26,26 @@ var logger;
  * 
  * @param {object} params
  */
-function plugin(params) {
+function plugin( params ) {
 	logger = params.logger;
-	params.dirname = params.dirname ? _.template(params.dirname)(params) : params.event.dir.resourcesPlatform;
-	logger.trace("fixing backbone usage in directory: " + params.dirname);
-	injectCode(params);
+	params.dirname = params.dirname ? _.template( params.dirname )( params ) : params.event.dir.resourcesPlatform;
+	logger.trace( "fixing backbone usage in directory: " + params.dirname );
+	injectCode( params );
 
 }
 
 /**
  * Inject necessary code into the file app.js
  */
-function injectCode(params) {
+function injectCode( params ) {
 
-	var fullpath = path.join(params.dirname, "app.js");
-	var source = fs.readFileSync(fullpath, 'utf8');
-	var test = /\/\/NATIVELOOP: BACKBONE-FIX/.test(source);
-	logger.trace("NATIVELOOP: BACKBONE-FIX -- CODE INJECTED ALREADY: " + test);
-	if(!test) {
-		source = source.replace(/(var\s+Alloy[^;]+;)/g, "$1\n//NATIVELOOP: BACKBONE-FIX\nAlloy.Backbone.Events.addEventListener = Backbone.Events.on;\nAlloy.Backbone.Events.removeEventListener = Backbone.Events.off;\n\n");
-		fs.writeFileSync(fullpath, source);
+	var fullpath = path.join( params.dirname, "app.js" );
+	var source = fs.readFileSync( fullpath, 'utf8' );
+	var test = /\/\/NATIVELOOP: BACKBONE-FIX/.test( source );
+	logger.trace( "NATIVELOOP: BACKBONE-FIX -- CODE INJECTED ALREADY: " + test );
+	if( !test ) {
+		source = source.replace( /(var\s+Alloy[^;]+;)/g, "$1\n//NATIVELOOP: BACKBONE-FIX\nAlloy.Backbone.Events.addEventListener = Backbone.Events.on;\nAlloy.Backbone.Events.removeEventListener = Backbone.Events.off;\n\n" );
+		fs.writeFileSync( fullpath, source );
 	}
 }
 

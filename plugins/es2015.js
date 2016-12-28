@@ -16,13 +16,13 @@
  * 
  */
 
-module.exports.tasks = [{
+module.exports.tasks = [ {
 	'module': module.id,
 	'options': {
 		'presets': [
 			'es2015'
 		]
 	},
-	'includes': ['**/*.js', '!backbone2.js', '!**/alloy/lodash.js'],
-	'events': ['preload', 'preparse']
-}]
+	'includes': [ '**/*.js', '!backbone2.js', '!**/alloy/lodash.js' ],
+	'events': [ 'preload', 'preparse' ]
+} ]
