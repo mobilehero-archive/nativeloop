@@ -15,7 +15,7 @@
  * @author Brenton House <brenton.house@gmail.com>
  * @version 0.1.0
  * @since 0.1.0
- * @copyright Copyright (c) 2016 by Superhero Studios Incorporated.  All Rights Reserved.
+ * @copyright Copyright (c) 2017 by Superhero Studios Incorporated.  All Rights Reserved.
  * @license Licensed under the terms of the MIT License (MIT)
  * 
  */

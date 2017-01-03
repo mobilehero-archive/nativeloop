@@ -11,7 +11,7 @@
  * @file {nativeloop} plugin for removing invalid http header in Alloy
  * @module nativeloop/plugins/remove-invalid-header
  * @author Brenton House <brenton.house@gmail.com>
- * @copyright Copyright (c) 2016 by Superhero Studios Incorporated.  All Rights Reserved.
+ * @copyright Copyright (c) 2017 by Superhero Studios Incorporated.  All Rights Reserved.
  * @license Licensed under the terms of the MIT License (MIT)
  * 
  */

@@ -11,7 +11,7 @@
  * @file {nativeloop} plugin for fixing underscore.js usage issues in Alloy
  * @module nativeloop/plugins/widgets-remove
  * @author Brenton House <brenton.house@gmail.com>
- * @copyright Copyright (c) 2016 by Superhero Studios Incorporated.  All Rights Reserved.
+ * @copyright Copyright (c) 2017 by Superhero Studios Incorporated.  All Rights Reserved.
  * @license Licensed under the terms of the MIT License (MIT)
  * 
  */

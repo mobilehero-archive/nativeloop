@@ -145,7 +145,7 @@ See the [license.md](https://github.com/nativeloop/nativeloop-mobile/blob/master
 
 ## Legal
 
-Nativeloop is developed by Superhero Studios and the community and is Copyright (c) 2016 by Superhero Studios Incorporated.  All Rights Reserved.
+Nativeloop is developed by Superhero Studios and the community and is Copyright (c) 2017 by Superhero Studios Incorporated.  All Rights Reserved.
 
 _Superhero Studios Incorporated and this project are in no way affiliated with any of the following companies:_
 

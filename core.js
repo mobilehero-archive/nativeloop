@@ -11,7 +11,7 @@
  * @file core module for {nativeloop}, a framework for building native mobile apps using nodejs style javascript.
  * @module nativeloop/core
  * @author Brenton House <brenton.house@gmail.com>
- * @copyright Copyright (c) 2016 by Superhero Studios Incorporated.  All Rights Reserved.
+ * @copyright Copyright (c) 2017 by Superhero Studios Incorporated.  All Rights Reserved.
  * @license Licensed under the terms of the MIT License (MIT)
  * 
  */

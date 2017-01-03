@@ -11,7 +11,7 @@
  * @file {nativeloop} plugin for transforming ES6/ES2015 code to ES5 code
  * @module nativeloop/plugins/nodejs
  * @author Brenton House <brenton.house@gmail.com>
- * @copyright Copyright (c) 2016 by Superhero Studios Incorporated.  All Rights Reserved.
+ * @copyright Copyright (c) 2017 by Superhero Studios Incorporated.  All Rights Reserved.
  * @license Licensed under the terms of the MIT License (MIT)
  * 
  */
