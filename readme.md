@@ -29,8 +29,13 @@ developer.read(warning)
 
 - [Overview](#overview)
 	- [What is [`{nativeloop}`][]?](#what-is-nativeloop)
-- [Install](#install)
+	- [Features](#features)
 - [Quick Start](#quick-start)
+	- [Install `{nativeloop}`](#install-nativeloop)
+		- [Option 1:  Install Globally](#option-1--install-globally)
+		- [Option 2:  Install Locally](#option-2--install-locally)
+		- [Option 3:  Install using gitTio](#option-3--install-using-gittio)
+		- [Install Prerequisites/Dependencies](#install-prerequisitesdependencies)
 - [Need Help?](#need-help)
 - [License](#license)
 - [Legal](#legal)
@@ -55,21 +60,61 @@ without compromising on the delivered product.
 [`{nativeloop}`][] is open-source (MIT) and is built upon the open-source version of [`appcelerator`][]
 and other open-source products.  If you like what you see, contribute to this and other open-source projects!
 
-See the nativeloop mobile page for more information about {nativeloop} features.
+### Features
+
+- [x] ECMAScript 2015/ES6 support (using babel transformations)
+- [x] Supports Node.js global object: `Promise` (using bluebird but can be easily replaced with your own)
+- [x] Supports Node.js core module: `fs` (not complete coverage)
+- [x] Supports Node.js core module: `path`
+- [ ] Supports Node.js core module: `url`
+- [ ] Supports Node.js core module: `querystring`
+- [x] Supports relative path usage to workaround https://jira.appcelerator.org/browse/TIMOB-24170
+- [x] Uses the latest version of lodash, instead of older version of underscore.js
+- [x] Supports installation of modules for your app using [`npm`][]
+- [x] Does not require replacing Alloy (globally or per build of appcelerator)
+- [x] Several free [`{nativeloop}`][] plugins developed by MobileHero are included and available now
+- [x] Build and use your own [`{nativeloop}`][] plugins easily!
+- [x] Customize which [`{nativeloop}`][] plugins run per project, platform or deployment type (dev,test,prod)!
+- [x] Works great with Appcelerator LiveView! (🎉 _yay!!_ 🎉)
+- [x] Supports for camelcase syntax in your Alloy xml views  (i.e. `<webView>` instead of `<WebView>` )
+- [x] Supports lowercase-dashed syntax in your Alloy views (i.e. `<web-view>` instead of `<WebView>` )
 
 
-## Install
+## Quick Start
+
+### Install `{nativeloop}`
+
+#### Option 1:  Install Globally
+
+>This is your quickest and easiest way to get started with `{nativeloop}`.  Installing globally will 
+allow it to be accessed by any our your mobile projects.
 
 ```bash
 npm install -g nativeloop
 ```
 
-## Quick Start
+#### Option 2:  Install Locally
 
-**Install Prerequisites**
+>Just as quick and easy, but this will allow you to use a specific version `{nativeloop}` for your mobile project.  Simply run this in the root of your mobile project!
+
+```bash
+npm install --save nativeloop
+```
+
+#### Option 3:  Install using gitTio
+
+> **:soon: Not available yet, but coming very soon!!**
+
+>Install this as a widget using gitTio (http://gitt.io).  We hope to have this option available soon!
+
+```bash
+gittio install nativeloop
+```
+
+#### Install Prerequisites/Dependencies
 
 >_Our goal is to provide as much automation as possible to make the mobile development
-experience as awesome as possible.  Currently there are some prerequisites items that
+experience as awesome as possible.  Currently there are some prerequisites/dependencies that
 need to installed manually but we hope to automate some of these in the near future!_
 
 
@@ -103,7 +148,9 @@ need to installed manually but we hope to automate some of these in the near fut
 
 - There might be a few more items to install... Stay tuned for more detailed instructions
 
-**New mobile project**
+***New mobile project**
+
+*See documentation for create for more details: https://nativeloop.github.io/nativeloop/create
 
 ```bash
 	native create my-cool-app

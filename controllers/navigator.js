@@ -43,7 +43,8 @@ var init = _.once( function() {
 		$.root = $.args.root ? Alloy.createController( $.args.root.moduleName, $.args.root ).getViewEx( { recurse: true } ) : Ti.UI.createWindow( { id: "window" } );
 		$.nav = Ti.UI.iOS.createNavigationWindow( {
 			window: $.root,
-			id: "nav"
+			id: "nav",
+			// backgroundColor: 'transparent',
 		} );
 
 		$.addClass( $.root, 'navbar' );

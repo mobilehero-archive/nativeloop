@@ -1,6 +1,6 @@
 # The MIT License (MIT)
 
-> Copyright (c) 2016 Superhero Studios Incorporated
+> Copyright (c) 2017 Superhero Studios Incorporated
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
