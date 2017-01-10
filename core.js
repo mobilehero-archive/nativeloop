@@ -140,7 +140,7 @@ handler.getAlloyFromFile = function( filename ) {
 
 	if( _.toLower( docRoot.nodeName ) === "nativeloop" ) {
 		docRoot.nodeName = CONST.ROOT_NODE;
-		docRoot.setAttribute( "module", "/nativeloop" );
+		docRoot.setAttribute( "module", "/nativeloop/ux" );
 	}
 
 	// Make sure the markup has a top-level <Alloy> tag

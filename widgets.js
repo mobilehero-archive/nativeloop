@@ -1,4 +1,4 @@
 module.exports = [
 	// "window",
-	"page"
+	"page",
 ];
