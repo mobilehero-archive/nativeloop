@@ -20,7 +20,7 @@ var package = require( "../package" );
 console.log( "package.version: " + package.version );
 
 // Create new version
-var new_version = semver.inc( package.version, 'prerelease', 'beta' );
+var new_version = semver.inc( package.version, 'prerelease', '' );
 console.log( "new_version: " + new_version );
 
 // Format commit message
