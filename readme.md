@@ -34,10 +34,10 @@ developer.read(warning)
 	- [Install `{nativeloop}`](#install-nativeloop)
 		- [Option 1:  Install Globally](#option-1--install-globally)
 		- [Option 2:  Install Locally](#option-2--install-locally)
-		- [Option 3:  Install using gitTio](#option-3--install-using-gittio)
+		- [Option 3:  Install using gitTio ![coming soon!](https://img.shields.io/badge/coming-soon-orange.png)](#option-3--install-using-gittio-coming-soonhttpsimgshieldsiobadgecoming-soon-orangepng)
 		- [Install Prerequisites/Dependencies](#install-prerequisitesdependencies)
 	- [Create new mobile project](#create-new-mobile-project)
-	- [Upgrade existing Appcelerator mobile project](#upgrade-existing-appcelerator-mobile-project)
+	- [Upgrade existing Appcelerator mobile project ![coming soon!](https://img.shields.io/badge/coming-soon-orange.png)](#upgrade-existing-appcelerator-mobile-project-coming-soonhttpsimgshieldsiobadgecoming-soon-orangepng)
 - [Need Help?](#need-help)
 - [License](#license)
 - [Legal](#legal)
@@ -68,8 +68,8 @@ and other open-source products.  If you like what you see, contribute to this an
 - [x] Supports Node.js global object: `Promise` (using bluebird but can be easily replaced with your own)
 - [x] Supports Node.js core module: `fs` (not complete coverage)
 - [x] Supports Node.js core module: `path`
-- [ ] Supports Node.js core module: `url`
-- [ ] Supports Node.js core module: `querystring`
+- [ ] ![coming soon!](https://img.shields.io/badge/coming-soon-orange.png) Supports Node.js core module: `url`
+- [ ] ![coming soon!](https://img.shields.io/badge/coming-soon-orange.png) Supports Node.js core module: `querystring`
 - [x] Supports relative path usage to workaround https://jira.appcelerator.org/browse/TIMOB-24170
 - [x] Uses the latest version of lodash, instead of older version of underscore.js
 - [x] Supports installation of modules for your app using [`npm`][]
@@ -80,6 +80,7 @@ and other open-source products.  If you like what you see, contribute to this an
 - [x] Works great with Appcelerator LiveView! (🎉 _yay!!_ 🎉)
 - [x] Supports for camelcase syntax in your Alloy xml views  (i.e. `<webView>` instead of `<WebView>` )
 - [x] Supports lowercase-dashed syntax in your Alloy views (i.e. `<web-view>` instead of `<WebView>` )
+- [x] Add support for extra xml attributes with Appcelerator Alloy views.
 
 
 ## Quick Start
@@ -103,7 +104,7 @@ npm install -g nativeloop
 npm install --save nativeloop
 ```
 
-#### Option 3:  Install using gitTio
+#### Option 3:  Install using gitTio ![coming soon!](https://img.shields.io/badge/coming-soon-orange.png)
 
 > **:soon: Not available yet, but coming very soon!!**
 
@@ -120,7 +121,7 @@ experience as awesome as possible.  Currently there are some prerequisites/depen
 need to installed manually but we hope to automate some of these in the near future!_
 
 
-- [OSX] Install latest Xcode from App Store _(7.3.1 as of the time of writing)_
+- [OSX] Install latest Xcode from App Store _(8.2.1 as of the time of writing)_
 - Install Appcelerator Titanium and Alloy
 
 ```bash
@@ -158,7 +159,7 @@ need to installed manually but we hope to automate some of these in the near fut
 	native create my-cool-app
 ```
 
-###Upgrade existing Appcelerator mobile project
+### Upgrade existing Appcelerator mobile project ![coming soon!](https://img.shields.io/badge/coming-soon-orange.png)
 
 > **:soon: Not available yet, but coming very soon!!**
 
