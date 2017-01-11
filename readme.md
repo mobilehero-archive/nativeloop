@@ -36,6 +36,8 @@ developer.read(warning)
 		- [Option 2:  Install Locally](#option-2--install-locally)
 		- [Option 3:  Install using gitTio](#option-3--install-using-gittio)
 		- [Install Prerequisites/Dependencies](#install-prerequisitesdependencies)
+	- [Create new mobile project](#create-new-mobile-project)
+	- [Upgrade existing Appcelerator mobile project](#upgrade-existing-appcelerator-mobile-project)
 - [Need Help?](#need-help)
 - [License](#license)
 - [Legal](#legal)
@@ -148,17 +150,15 @@ need to installed manually but we hope to automate some of these in the near fut
 
 - There might be a few more items to install... Stay tuned for more detailed instructions
 
-***New mobile project**
+###Create new mobile project
 
-*See documentation for create for more details: https://nativeloop.github.io/nativeloop/create
+:book: [see documentation for `create` for more details](https://github.com/nativeloop/nativeloop/blob/develop/docs/create.md)
 
 ```bash
 	native create my-cool-app
 ```
 
-:book: [see documentation for `create`](docs/create.md)
-
-**Upgrading existing Appcelerator mobile project**
+###Upgrade existing Appcelerator mobile project
 
 > **:soon: Not available yet, but coming very soon!!**
 
