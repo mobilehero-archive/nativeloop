@@ -193,14 +193,15 @@ need to installed manually but we hope to automate some of these in the near fut
     - [x] Supports lowercase-dashed syntax in your Alloy views (i.e. `<web-view>` instead of `<WebView>` )
     - [x] Extra xml attributes added to Appcelerator Alloy views.  (docs coming soon)
 - [x] **Enhanced UI controls!**
-    [ ] `view`
-    [ ] `button`
-    [ ] `imageView`
-    [ ] `label`
+    - [ ] `Biew`
+    - [ ] `Button`
+    - [ ] `ImageView`
+    - [ ] `Label`
+    - [ ] `Window`
 - [x] **New UI controls!**
-    [ ] navbar - ![coming soon!](https://img.shields.io/badge/coming-soon-orange.png)
+    - [ ] navbar - ![coming soon!](https://img.shields.io/badge/coming-soon-orange.png)
 - [x] **New libraries!**
-    [ ] navigator - `cross-platform window navigation`  ![coming soon!](https://img.shields.io/badge/coming-soon-orange.png)
+    - [ ] navigator - `cross-platform window navigation`  ![coming soon!](https://img.shields.io/badge/coming-soon-orange.png)
 
 
 ## Need Help?
