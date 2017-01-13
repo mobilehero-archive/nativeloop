@@ -193,7 +193,7 @@ need to installed manually but we hope to automate some of these in the near fut
     - [x] Supports lowercase-dashed syntax in your Alloy views (i.e. `<web-view>` instead of `<WebView>` )
     - [x] Extra xml attributes added to Appcelerator Alloy views.  (docs coming soon)
 - [x] **Enhanced UI controls!**
-    - [ ] `Biew`
+    - [ ] `View
     - [ ] `Button`
     - [ ] `ImageView`
     - [ ] `Label`
