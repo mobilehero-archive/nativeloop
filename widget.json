@@ -3,11 +3,11 @@
 	"name": "nativeloop",
 	"description": "{nativeloop} is a framework for building awesome native apps using node.js style javascript. It provides developers with access to an extremely rapid development process without compromising on the delivered product.",
 	"author": "Brenton House, @brentonhouse",
-	"version": "0.0.5",
+	"version": "0.0.6",
 	"copyright": "Copyright (c) 2017, Superhero Studios Incorporated",
 	"license": "MIT",
 	"min-alloy-version": "1.9.0",
 	"min-titanium-version": "5.0",
-	"tags": "mobilehero, nodejs, es6",
+	"tags": "mobilehero, nodejs, es6, navigation, navigator, http, https, alloy, ux, node, eventemitter, lodash, promises, bluebird",
 	"platforms": "android,ios"
 }
