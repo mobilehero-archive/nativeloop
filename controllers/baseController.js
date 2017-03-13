@@ -1,0 +1,2 @@
+
+$.nav = $.args.params.navigator;

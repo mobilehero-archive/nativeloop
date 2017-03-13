@@ -23,11 +23,10 @@
 
 // var apm = Alloy.Globals.apm;
 var apm = require( 'nativeloop/apm' );
-var utils = require( 'nativeloop/utils' );
 
 $.getViewAlloy = $.getView;
 $.getView = function( id ) {
-	$.init();
+	init();
 	return $.getViewAlloy( id );
 }
 
@@ -35,43 +34,35 @@ var createWindow = function( payload ) {
 	return payload && payload.moduleName ? Alloy.createController( payload.moduleName, payload ).getViewEx( { recurse: true } ) : null;
 }
 
-/**
- * @function createWindow2
- * @summary create a window
- * @param {object} params - parameters used to initialize the creating of the window
- * @see {@link http://docs.appcelerator.com/platform/latest/#!/api/Modules.Performance | Appcelerator Titanium Window Documentation} 
- * @since 1.0.0
- * @returns {object} - Returns the Titanium Window 
- */
 var createWindow2 = function( params ) {
 	let __prefix = $.__controllerPath + ".createWindow2: ";
 	apm.leaveBreadcrumb( __prefix + "entering" );
-	console.error( 'params: ' + utils.stringify( params, null, 2 ) );
-
-	let payload = _.defaults(_.cloneDeep(params.screen), params.params);
-	payload.__navigatorId = params.__navigatorId;
-	console.error( 'payload: ' + utils.stringify( payload, null, 2 ) );
-	return Alloy.createController( params.screen.name, payload ).getViewEx( { recurse: true } );
-
+	console.error('params: ' + JSON.stringify(params, null, 2));
+	if( params && params.screen ) {
+		console.error('you are here → ');
+		let payload = params.passProps;
+		payload.navigator = params.navigator;
+		console.error( 'payload: ' + JSON.stringify( payload, null, 2 ) );
+		return Alloy.createController( params.screen, payload ).getViewEx( { recurse: true } );
+	}
 	apm.leaveBreadcrumb( __prefix + "exiting" );
 	__prefix = null;
 }
 
 
-$.init = _.once( function() {
+var init = _.once( function() {
 	var __prefix = $.__controllerPath + ".init: ";
 	apm.leaveBreadcrumb( __prefix + "entering" );
 	var window_stack = [];
 	var __local_prefix
 	if( OS_IOS ) {
 
-		console.error( '$.args: ' + utils.stringify( $.args, null, 2 ) );
 		// $.root = $.args.root ? Alloy.createController( $.args.root.moduleName, $.args.root ).getViewEx( { recurse: true } ) : Ti.UI.createWindow( { id: "window" } );
 		$.root = createWindow2( $.args );
+		console.error($.root);
 		$.nav = Ti.UI.iOS.createNavigationWindow( {
 			window: $.root,
 			id: "nav",
-			navBarHidden: true,
 			// backgroundColor: 'transparent',
 		} );
 
@@ -88,7 +79,7 @@ $.init = _.once( function() {
 			} catch( err ) {
 				console.error( err );
 			}
-			window && $.nav.openWindow( window, { animated: params.animated } );
+			window && $.nav.openWindow( window, { animated: payload.animated } );
 			window_stack.push( window );
 			apm.leaveBreadcrumb( __local_prefix + "exiting" );
 		};

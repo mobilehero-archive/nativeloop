@@ -16,7 +16,7 @@
  * 
  */
 
-var _ = require( 'lodash' );
+const _ = require( 'lodash' );
 
 /**
  * Adds nativeloop widget to config.json
@@ -24,9 +24,11 @@ var _ = require( 'lodash' );
  * @param {object} params - The parameters for adding widget
  * @param {object} params.input - The parsed json of the config.json
  * @param {object} params.logger - The nativeloop logger
+ * @since 1.0.0
+ * @returns {object} - The modified input object
  */
 exports.addWidgets = function( params ) {
-	var logger = params.logger;
+	let logger = params.logger;
 	logger.trace( 'Adding nativeloop widget to config.json' );
 	params.logger.error( "adding widgets" );
 	if( params.input.widgets && params.input.dependencies ) {
