@@ -1,6 +1,6 @@
 {
   "name": "nativeloop",
-  "version": "0.0.6-0",
+  "version": "0.0.6",
   "description": "{nativeloop} is a framework for building awesome native apps using node.js style javascript. It provides developers with access to an extremely rapid development process without compromising on the delivered product.",
   "keywords": [
     "nativeloop",
