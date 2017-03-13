@@ -75,7 +75,7 @@ module.exports = function( rootpath, registry, includes, logger ) {
 
 		var requireRegex = /(require)\s*\(((?:[^)(]+|\((?:[^)(]+|\([^)(]*\))*\))*)\)/g;
 		var staticRequireRegex = /(require)(?:\(\s*['"])([^'"]+)(?:['"]\s*\))/g;
-		var alloyDynamicRegex = /require\(\s*['']alloy\//g
+		var alloyDynamicRegex = /require\(\s*['"]alloy\//g
 		var alloyResolveRegex = /require\(\s*Alloy\.resolve\(/g
 
 

@@ -10,33 +10,32 @@
  *                                                                    
  * @file core module for {nativeloop}, a framework for building native mobile apps using nodejs style javascript.
  * @module nativeloop/core
- * @author Brenton House <brenton.house@gmail.com>
+ * @author Brenton House <brenton.house@gmail.com>* 
+ * @version 1.0.0
+ * @since 1.0.0
  * @copyright Copyright (c) 2017 by Superhero Studios Incorporated.  All Rights Reserved.
  * @license Licensed under the terms of the MIT License (MIT)
  * 
  */
 
-var _ = require( 'lodash' );
-var path = require( 'path' );
-var resolve = require( 'resolve' );
-var paths = require( 'global-paths' );
-var hjson = require( 'hjson' );
-var utils = require( './utils' );
+const _ = require( 'lodash' );
+const path = require( 'path' );
+const resolve = require( 'resolve' );
+const paths = require( 'global-paths' );
+const hjson = require( 'hjson' );
+const utils = require( './utils' );
 // var config;
 var _event;
-var debug = require( 'debug' );
-var log = debug( 'nativeloop' );
-var warn = debug( 'nativeloop' );
+const debug = require( 'debug' );
+const log = debug( 'nativeloop' );
+const warn = debug( 'nativeloop' );
 debug.log = console.info.bind( console );
-var alloyParser = require( './alloy-parser' );
-
-var nativeloop_widgets = require( './widgets' );
+const alloyParser = require( './alloy-parser' );
+const nativeloop_widgets = require( './widgets' );
 
 var CONST;
 var CU;
 var U;
-
-
 
 
 function handler( params ) {
@@ -44,9 +43,12 @@ function handler( params ) {
 }
 module.exports = handler;
 
-
-
-
+/**
+ * @function init
+ * @summary Initialize the core handler
+ * @param {object} params - Parameters to initialize core
+ * @since 1.0.0
+ */
 var init = function( params ) {
 	// console.debug("params: " + JSON.stringify(params, null, 2));
 
@@ -99,11 +101,49 @@ var init = function( params ) {
 		return func( options );
 	} );
 
+
+	// var widgetParser = {
+	// 	parse: ( node, state ) => {
+	// 		if( !node.getAttribute( 'src' ) && state.widgetId ) {
+	// 			node.setAttribute( 'src', state.widgetId );
+	// 		}
+
+	// 		console.error( 'you are here → inside widgetParser' );
+	// 		node.nodeName = 'Require';
+	// 		node.setAttribute( 'type', 'widget' );
+
+	// 		let response = params.requireParser.parse( node, state );
+	// 		return response;
+	// 	}
+	// }
+
+
 	params.baseParser.parse = alloyParser.parse( {
 		baseParser: params.baseParser,
 		defaultParser: params.defaultParser,
 		widgetParser: params.widgetParser,
+		// widgetParser: widgetParser,
 	} );
+
+
+	// params.requireParser.parse = _.wrap( params.requireParser.parse, ( func, node, state ) => {
+	// 	console.error('you are here → inside the FAKE require parser');
+	// 	let response = func( node, state );
+	// 	// console.error(  node  );
+	// 	// console.error( node.attributes);
+	// 	// console.error( state );
+	// 	// console.error('node.getAttribute("__nativeloop"): ' + JSON.stringify(node.getAttribute('__nativeloop'), null, 2));
+
+	// 	// console.error( 'response: ' + JSON.stringify( response, null, 2 ) );
+	// 	if( node.getAttribute( '__nativeloop' ) && response.parent && response.parent.symbol ) {
+	// 		console.error( 'you are here → fixing parent.symbol' );
+	// 		// response.parent.symbol = response.parent.symbol.replace( /\.getViewEx[^\)]*\)/, '' );
+	// 		response.code = response.code.replace( /\.getViewEx[^\)]*\)/g, '' );
+	// 	}
+	// 	console.error( 'response.code: ' + JSON.stringify( response.code, null, 2 ) );
+	// 	console.error( 'response.parent: ' + JSON.stringify( response.parent, null, 2 ) );
+	// 	return response;
+	// } );
 
 	U.XML.getAlloyFromFile = handler.getAlloyFromFile;
 
@@ -132,6 +172,13 @@ var init = function( params ) {
 	params.task( "compile:app.js", handler.appjs );
 }
 
+/**
+ * @function getAlloyFromFile
+ * @summary summary
+ * @param {string} filename - description
+ * @since 1.0.0
+ * @returns {object} - description
+ */
 handler.getAlloyFromFile = function( filename ) {
 
 	// console.trace("***** INSIDE getAlloyFromFile()");
@@ -140,9 +187,10 @@ handler.getAlloyFromFile = function( filename ) {
 
 	if( _.toLower( docRoot.nodeName ) === "nativeloop" ) {
 		docRoot.nodeName = CONST.ROOT_NODE;
-		docRoot.setAttribute( "module", "/nativeloop/ux" );
+		docRoot.setAttribute( "module", "/nativeloop" );
+	} else if( docRoot.nodeName === CONST.ROOT_NODE.toLowerCase() ) {
+		docRoot.nodeName = CONST.ROOT_NODE;
 	}
-
 	// Make sure the markup has a top-level <Alloy> tag
 	else if( docRoot.nodeName !== CONST.ROOT_NODE ) {
 		exports.die( [
@@ -168,7 +216,13 @@ handler.getAlloyFromFile = function( filename ) {
 
 // handler.alloyParser = alloyParser.parse;
 
-
+/**
+ * @function splitTasks
+ * @summary summary
+ * @param {object} tasks - description
+ * @since 1.0.0
+ * @returns {object} - description
+ */
 function splitTasks( tasks ) {
 	var results = [];
 	if( !_.isArray( tasks ) ) {
@@ -200,13 +254,25 @@ var _init = _.once( function() {
 } );
 
 
-
+/**
+ * @function loadTasks
+ * @summary summary
+ * @since 1.0.0
+ * @returns {object} - description
+*/
 function loadTasks() {
 	var tasks = _.cloneDeep( _.get( handler.config, "nativeloop.tasks", [] ).concat( require( "./core_tasks" ) ) );
 	// handler.logger.debug("loaded Tasks: " + JSON.stringify(tasks, null, 2));
 	return tasks;
 }
 
+/**
+ * @function configureTasks
+ * @summary summary
+ * @param {object} tasks - description
+ * @since 1.0.0
+ * @returns {object} - description
+ */
 function configureTasks( tasks ) {
 
 	tasks = tasks || loadTasks();
@@ -245,6 +311,11 @@ function configureTasks( tasks ) {
 	return configuredTasks;
 }
 
+/**
+ * @function loadConfig
+ * @summary Load alloy config file and set it to property in handler
+ * @since 1.0.0
+*/
 var loadConfig = function() {
 
 	handler.logger.debug( "Loading alloy config file" );
@@ -266,6 +337,13 @@ Object.defineProperty( handler, "event", {
 	configurable: false
 } );
 
+/**
+ * @function executeScripts
+ * @summary summary
+ * @param {string} eventName - description
+ * @param {object} params    - description
+ * @since 1.0.0
+ */
 function executeScripts( eventName, params ) {
 
 	// handler.logger.trace("task to execute: " + JSON.stringify(handler.configuredTasks, null, 2));

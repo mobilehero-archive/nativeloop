@@ -1,6 +1,6 @@
 #! /usr/bin/env node
 
-var yargs = require( "yargs" );
+const yargs = require( "yargs" );
 var Promise = require( "bluebird" );
 Promise.promisifyAll( require( "fs-extra" ) );
 const _ = require( 'lodash' );

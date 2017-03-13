@@ -55,17 +55,3 @@ utils.replaceBackSlashes = function( input ) {
 
 	return input.replace( /\\/g, '/' );
 };
-
-
-/**
- * @function createUrlHash
- * @param {string} url - Url to be hashed
- * @returns {string} Hash of normalized url
- */
-utils.createUrlHash = ( url ) => {
-
-	//TODO:  Normalize url
-
-	return Ti.Utils.md5HexDigest( url );
-
-}

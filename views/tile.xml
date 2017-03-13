@@ -1,0 +1,13 @@
+<Alloy>
+	<View id="_wrapper" _backgroundColor="darkgray">
+		<View id="_outer" _backgroundColor="orange" touchEnabled="true">
+			<View id="_inner" layout="vertical" _backgroundColor="yellow" touchEnabled="false">
+				<View id="_iconbox" _backgroundColor="blue" _onPostlayout="onPostLayout" touchEnabled="false">
+					<ImageView id="_image" _onPostlayout="onPostLayout" _backgroundColor="pink" touchEnabled="false" zIndex="100" />
+					<Label id="_icon" _onPostlayout="onPostLayout" _backgroundColor="orange" touchEnabled="false" zIndex="200" />
+				</View>
+				<Label id="_title" _onPostlayout="onPostLayout" touchEnabled="false" _backgroundColor="green" />
+			</View>
+		</View>
+	</View>
+</Alloy>
