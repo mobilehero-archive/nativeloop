@@ -1,3 +1,34 @@
+
+[//]: # (header-start)
+
+<a href="https://brenton.house/saying-goodbye-to-axway-amplify-titanium-31a44f3671de">
+	<h1 align="center">
+	🪦 RIP Axway Amplify Titanium (2010 - 2022)
+	</h1>
+</a>
+<a href="https://brenton.house/saying-goodbye-to-axway-amplify-titanium-31a44f3671de">
+	<p align="center">
+		<img src="https://cdn.secure-api.org/images/RIP-Axway-Amplify-Titanium.png" alt="RIP Axway Amplify Titanium (2010 - 2022)" width="80%" />
+	</p>
+</a>
+<a href="https://brenton.house/saying-goodbye-to-axway-amplify-titanium-31a44f3671de">
+	<p align="center">
+		🪦 &nbsp; RIP Axway Amplify Titanium (2010 - 2022)
+	</p>
+</a>
+<p>&nbsp;</p>
+<a href="https://brenton.house/saying-goodbye-to-axway-amplify-titanium-31a44f3671de">
+	<h2 align="center">
+		🛑 This project is no longer being maintained 🛑
+	</h2>
+</a>
+<p>&nbsp;</p>
+<hr>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+
+[//]: # (header-end)
+
 <h3 align="center">
   <img src="https://cdn.secure-api.org/images/nativeloop_logo_text_256.png" alt="nativeloop logo" />
 </h3>
@@ -27,23 +58,23 @@ developer.read(warning)
 
 <!-- TOC depthFrom:2 depthTo:6 insertAnchor:false orderedList:false updateOnSave:true withLinks:true -->
 
-- [Overview](#overview)
-	- [What is [`{nativeloop}`][]?](#what-is-nativeloop)
-- [(Really) Quick Start](#really-quick-start)
-- [Quick Start (with some options)](#quick-start-with-some-options)
-	- [Install `{nativeloop}`](#install-nativeloop)
-		- [Option 1:  Install Globally](#option-1--install-globally)
-		- [Option 2:  Install Locally](#option-2--install-locally)
-		- [Option 3:  Install using gitTio ![coming soon!](https://img.shields.io/badge/coming-soon-orange.png)](#option-3--install-using-gittio-coming-soonhttpsimgshieldsiobadgecoming-soon-orangepng)
-	- [Setup mobile project](#setup-mobile-project)
-		- [Create new mobile project](#create-new-mobile-project)
-		- [Upgrade existing Appcelerator mobile project ![coming soon!](https://img.shields.io/badge/coming-soon-orange.png)](#upgrade-existing-appcelerator-mobile-project-coming-soonhttpsimgshieldsiobadgecoming-soon-orangepng)
-	- [Install Prerequisites/Dependencies](#install-prerequisitesdependencies)
-- [CLI Features](#cli-features)
-- [Runtime Features](#runtime-features)
-- [Need Help?](#need-help)
-- [License](#license)
-- [Legal](#legal)
+* [Overview](#overview)
+	* [What is `{nativeloop}`?](#what-is-nativeloop)
+* [(Really) Quick Start](#really-quick-start)
+* [Quick Start (with some options)](#quick-start-with-some-options)
+	* [Install `{nativeloop}`](#install-nativeloop)
+		* [Option 1:  Install Globally](#option-1--install-globally)
+		* [Option 2:  Install Locally](#option-2--install-locally)
+		* [Option 3:  Install using gitTio !coming soon!](#option-3--install-using-gittio-)
+	* [Setup mobile project](#setup-mobile-project)
+		* [Create new mobile project](#create-new-mobile-project)
+		* [Upgrade existing Appcelerator mobile project !coming soon!](#upgrade-existing-appcelerator-mobile-project-)
+	* [Install Prerequisites/Dependencies](#install-prerequisitesdependencies)
+* [CLI Features](#cli-features)
+* [Runtime Features](#runtime-features)
+* [Need Help?](#need-help)
+* [License](#license)
+* [Legal](#legal)
 
 <!-- /TOC -->
 
