@@ -1,30 +1,33 @@
 
 [//]: # (header-start)
 
-<a href="https://brenton.house/saying-goodbye-to-axway-amplify-titanium-31a44f3671de">
+
 <h1 align="center">
-	Axway Amplify End-of-Life Announcement
+	<a href="https://brenton.house/saying-goodbye-to-axway-amplify-titanium-31a44f3671de">
+		Axway Amplify End-of-Life Announcement
+	</a>	
 </h1>
 <h2 align="center">
-	👇 &nbsp; See notes below  &nbsp; 👇
+	👇 &nbsp; See API FAQ below  &nbsp; 👇
 </h2>	
-</a>
+
 
 <a href="https://brenton.house/saying-goodbye-to-axway-amplify-titanium-31a44f3671de">
 	<p align="center">
 		<img src="https://cdn.secure-api.org/images/RIP-Axway-Amplify-Titanium.png" alt="RIP Axway Amplify Titanium (2010 - 2022)" width="80%" />
 	</p>
-</a>
-<a href="https://brenton.house/saying-goodbye-to-axway-amplify-titanium-31a44f3671de">
-	<p align="center">
-		🪦 &nbsp; RIP Axway Amplify Titanium (2010 - 2022)
-	</p>
-</a>
-<a href="https://brenton.house/saying-goodbye-to-axway-amplify-titanium-31a44f3671de">
-	<p align="center">
-		🪦 &nbsp; RIP Axway Amplify Cloud Services (2012 - 2022)
-	</p>
-</a>
+</a>	
+<p align="center">
+	<a href="https://brenton.house/saying-goodbye-to-axway-amplify-titanium-31a44f3671de">
+			🪦 &nbsp; RIP Axway Amplify Titanium (2010 - 2022)
+	</a>
+</p>
+<p align="center">
+	<a href="https://brenton.house/saying-goodbye-to-axway-amplify-titanium-31a44f3671de">
+			🪦 &nbsp; RIP Axway Amplify Cloud Services (2012 - 2022)
+	</a>
+</p>
+
 <hr>
 <a href="https://brenton.house/saying-goodbye-to-axway-amplify-titanium-31a44f3671de">
 	<h4 align="center">
@@ -41,6 +44,24 @@ Some Open-Source versions of Axway products will live on after End-of-Life (EOL)
 
 <p>&nbsp;</p>
 <hr>
+
+## API FAQ:
+
+* [API Best Practices](https://brenton.house)
+* [What is API Security?](https://brenton.house/what-is-api-security-5ca8117d4911)
+* [Top API Trends for 2022](https://brenton.house/top-10-api-integration-trends-for-2022-49b05f2ef299)
+* [What is a Frankenstein API?](https://brenton.house/what-is-a-frankenstein-api-4d6e59fca6)
+* [What is a Zombie API?](https://brenton.house/what-is-a-zombie-api-6e5427c39b6a)
+* [API Developer Experience](https://brenton.house/keys-to-winning-with-an-awesome-api-developer-experience-62dd2fa668f4)
+* [API Cybersecurity 101](https://brenton.house/what-is-api-security-5ca8117d4911)
+* [YouTube API Videos](https://youtube.com/brentonhouse)
+* [YouTube API Shorts Videos](https://youtube.com/apishorts)
+
+
+
+<p>&nbsp;</p>
+<hr>
+
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 
